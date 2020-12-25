@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="radius_shape_signuplogin">30dp</dimen>
+    <dimen name="padding_14dp">14dp</dimen>
+    <dimen name="padding_12dp">12dp</dimen>
+    <dimen name="margin_25dp">25dp</dimen>
+    <dimen name="margin_12dp">12dp</dimen>
+    <dimen name="margin_40dp">40dp</dimen>
+    <dimen name="text_size_17sp">17sp</dimen>
+</resources>

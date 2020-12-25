@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:fillViewport="true"
+        >
+
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/signup_login_fragment"
+                android:background="@color/dull_white"
+                tools:context=".ui.fragments.SignupLoginFragment"
+                >
+
+
+                <ImageView
+                    android:id="@+id/header_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:src="@drawable/shape_signuplogin"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintHeight_percent="0.409"
+                    />
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:src="@drawable/ic_chef_topi"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/signup_login_frag_title"/>
+
+                <TextView
+                    android:id="@+id/signup_login_frag_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/signinfrag_title"
+                    android:textSize="@dimen/text_size_18sp"
+                    android:fontFamily="@font/sf_pro_rounded_semibold"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:padding="@dimen/padding_12dp"
+                    app:layout_constraintBottom_toBottomOf="@id/header_image"
+                    app:layout_constraintRight_toRightOf="@id/header_image"
+                    app:layout_constraintLeft_toLeftOf="@id/header_image"/>
+
+                <LinearLayout
+                    android:id="@+id/name_input_container"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toTopOf="@id/btn_signinfrag"
+                    app:layout_constraintEnd_toEndOf="@+id/signup_login_frag_title"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/header_image"
+                    app:layout_constraintWidth_percent="0.80">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/text_phone_field"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hint_phone_number"
+                        android:layout_marginBottom="12dp"
+                        app:hintTextAppearance="@style/hintTextStyle"
+                        app:boxBackgroundColor="@color/dull_white">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="phone"
+                            android:textAppearance="@style/EditTextStyle" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/text_otp_field"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hint_otp"
+                        app:hintTextAppearance="@style/hintTextStyle"
+                        app:boxBackgroundColor="@color/dull_white">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/EditTextStyle"
+                            android:inputType="number"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_signinfrag"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/ic_rectangle_2"
+                    android:fontFamily="@font/sf_pro_rounded_bold"
+                    android:text="Send OTP"
+                    android:layout_marginBottom="@dimen/margin_20dp"
+                    android:textAllCaps="false"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_size_16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHeight_percent="0.08"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintWidth_percent="0.75" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </ScrollView>
+</layout>

@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Homemade</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="signinfrag_title">Sign in with your phone number</string>
+    <string name="hint_phone_number">Phone number</string>
+    <string name="hint_otp">OTP</string>
+    <string name="hint_first_name">First name</string>
+    <string name="hint_last_name">Last Name</string>
+    <string name="adress_label_credentialsfrag">Adress</string>
+    <string name="hint_street_name">Street name</string>
+    <string name="hint_building_name">Building Name</string>
+    <string name="hint_locality">Locality</string>
+    <string name="hint_city">City</string>
+    <string name="hint_pincode">Pincode</string>
+    <string name="send_otp">Send OTP</string>
+</resources>
