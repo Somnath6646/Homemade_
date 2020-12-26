@@ -10,13 +10,14 @@
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="36dp"
-            android:gravity="center"
-            android:text="Splash Fragment" />
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="@color/dull_white">
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+
+            android:src="@drawable/ic_chef_topi"/>
 
     </LinearLayout>
 
