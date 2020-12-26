@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+    <Transition
+        app:constraintSetEnd="@layout/fragment_home_end_scene"
+        app:constraintSetStart="@layout/fragment_home" >
+        <OnClick app:targetId="@+id/nav_icon"
+            app:clickAction="toggle"/>
+    </Transition>
+</MotionScene>

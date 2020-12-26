@@ -13,14 +13,14 @@ import androidx.lifecycle.ViewModelProvider
 abstract class BaseFragment<VB: ViewDataBinding, VM: ViewModel > : Fragment(){
 
     protected lateinit var binding: VB
-    private lateinit var viewModel: VM
+    protected lateinit var viewModel: VM
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate<VB>(inflater, getLayout(), container, false)
+        binding = DataBindingUtil.inflate(inflater, getLayout(), container, false)
 
         viewModel = ViewModelProvider(requireActivity()).get(getViewModelClass())
 

@@ -14,4 +14,12 @@
     <string name="hint_city">City</string>
     <string name="hint_pincode">Pincode</string>
     <string name="send_otp">Send OTP</string>
+    <string name="label_available_packs">Available packs</string>
+    <string name="sample_description_available_packs">A pocket friendly daily meal package for hostellers. The premium quality food is delivered at your doorstep with no delivery charges. Daily meal is available only at Rs. 47.</string>
+    <string name="sample_name_available_packs">First Choice</string>
+    <string name="sample_enroll_now_btn">Enroll now</string>
+    <string name="sign_in_btn_text">Sign in</string>
+    <string name="proceed_text_cred">Proceed</string>
+    <string name="send_otp_btn_text">Send OTP</string>
+    <string name="sample_address">49,\n Block C,\n Bangur Avenue,\n Kolkata - 700055</string>
 </resources>

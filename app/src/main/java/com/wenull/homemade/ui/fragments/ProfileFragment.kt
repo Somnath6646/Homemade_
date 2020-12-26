@@ -1,7 +1,6 @@
 package com.wenull.homemade.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,35 +9,33 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.wenull.homemade.Pack
 import com.wenull.homemade.R
 import com.wenull.homemade.adapter.AvailablePacksAdapter
-import com.wenull.homemade.databinding.FragmentHomeBinding
-import com.wenull.homemade.databinding.FragmentSplashBinding
+import com.wenull.homemade.adapter.UserPacksAdapter
+import com.wenull.homemade.databinding.FragmentProfileBinding
 import com.wenull.homemade.ui.activities.HomemadeActivityViewModel
 import com.wenull.homemade.ui.fragments.base.BaseFragment
 
-class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeActivityViewModel>() {
 
-    private lateinit var adapter: AvailablePacksAdapter
+class ProfileFragment : BaseFragment<FragmentProfileBinding, HomemadeActivityViewModel>() {
 
-    override fun getLayout(): Int = R.layout.fragment_home
+    private lateinit var adapter: UserPacksAdapter
+
+    override fun getLayout(): Int  = R.layout.fragment_profile
 
     override fun getViewModelClass(): Class<HomemadeActivityViewModel> = HomemadeActivityViewModel::class.java
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setUpRecyclerView()
-
-        binding.layoutDrawer.profileBtnSidenav.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToProfileFragment()
-            findNavController().navigate(action)
+        binding.profileBackBtn.setOnClickListener {
+            findNavController().popBackStack()
         }
-
     }
 
     private fun setUpRecyclerView(){
-        adapter = AvailablePacksAdapter()
+        adapter = UserPacksAdapter()
 
-        binding.layoutContent.recylerViewAvailablePacks.adapter = adapter
-        binding.layoutContent.recylerViewAvailablePacks.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.recylerViewYourPacks.adapter = adapter
+        binding.recylerViewYourPacks.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         displayPacks()
     }
 

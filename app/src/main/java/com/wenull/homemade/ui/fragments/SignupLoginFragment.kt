@@ -19,14 +19,13 @@ class SignupLoginFragment : BaseFragment<FragmentSignupLoginBinding, HomemadeAct
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val button = binding.btnSigninfrag
-        button.setOnClickListener {
-            if (button.text.toString().equals("Sign In")) {
+        binding.btnSigninfrag.setOnClickListener {
+            if (binding.btnSigninfragText.text.toString().equals("Sign In")) {
                 val action =
                     SignupLoginFragmentDirections.actionSignupLoginFragmentToCredentialsFragment()
                 findNavController().navigate(action)
             }else{
-                button.text = "Sign In"
+                binding.btnSigninfragText.text = "Sign In"
             }
         }
    }
