@@ -1,27 +1,23 @@
 package com.wenull.homemade.ui.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wenull.homemade.Pack
 import com.wenull.homemade.R
-import com.wenull.homemade.adapter.AvailablePacksAdapter
 import com.wenull.homemade.adapter.UserPacksAdapter
 import com.wenull.homemade.databinding.FragmentProfileBinding
-import com.wenull.homemade.ui.activities.HomemadeActivityViewModel
+import com.wenull.homemade.ui.viewmodel.HomemadeViewModel
 import com.wenull.homemade.ui.fragments.base.BaseFragment
 
 
-class ProfileFragment : BaseFragment<FragmentProfileBinding, HomemadeActivityViewModel>() {
+class ProfileFragment : BaseFragment<FragmentProfileBinding, HomemadeViewModel>() {
 
     private lateinit var adapter: UserPacksAdapter
 
     override fun getLayout(): Int  = R.layout.fragment_profile
 
-    override fun getViewModelClass(): Class<HomemadeActivityViewModel> = HomemadeActivityViewModel::class.java
+    override fun getViewModelClass(): Class<HomemadeViewModel> = HomemadeViewModel::class.java
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

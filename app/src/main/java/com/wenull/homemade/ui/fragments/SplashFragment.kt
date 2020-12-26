@@ -2,21 +2,16 @@ package com.wenull.homemade.ui.fragments
 
 import android.os.Bundle
 import android.os.CountDownTimer
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.wenull.homemade.R
 import com.wenull.homemade.databinding.FragmentSplashBinding
-import com.wenull.homemade.ui.activities.HomemadeActivityViewModel
+import com.wenull.homemade.ui.viewmodel.HomemadeViewModel
 import com.wenull.homemade.ui.fragments.base.BaseFragment
 
-class SplashFragment : BaseFragment<FragmentSplashBinding, HomemadeActivityViewModel>() {
+class SplashFragment : BaseFragment<FragmentSplashBinding, HomemadeViewModel>() {
     override fun getLayout(): Int = R.layout.fragment_splash
 
-    override fun getViewModelClass(): Class<HomemadeActivityViewModel> = HomemadeActivityViewModel::class.java
+    override fun getViewModelClass(): Class<HomemadeViewModel> = HomemadeViewModel::class.java
 
     private lateinit var timer: CountDownTimer
 

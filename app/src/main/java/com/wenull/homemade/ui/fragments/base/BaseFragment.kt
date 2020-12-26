@@ -9,8 +9,11 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.wenull.homemade.data.remote.FirebaseSource
+import com.wenull.homemade.repositories.HomemadeRepository
+import com.wenull.homemade.ui.viewmodel.HomemadeViewModelFactory
 
-abstract class BaseFragment<VB: ViewDataBinding, VM: ViewModel > : Fragment(){
+abstract class BaseFragment<VB: ViewDataBinding, VM: ViewModel> : Fragment(){
 
     protected lateinit var binding: VB
     protected lateinit var viewModel: VM
@@ -22,7 +25,11 @@ abstract class BaseFragment<VB: ViewDataBinding, VM: ViewModel > : Fragment(){
     ): View? {
         binding = DataBindingUtil.inflate(inflater, getLayout(), container, false)
 
-        viewModel = ViewModelProvider(requireActivity()).get(getViewModelClass())
+        val repository = HomemadeRepository(FirebaseSource(requireActivity()))
+
+        val factory = HomemadeViewModelFactory(repository)
+
+        viewModel = ViewModelProvider(this, factory).get(getViewModelClass())
 
         return binding.root
     }

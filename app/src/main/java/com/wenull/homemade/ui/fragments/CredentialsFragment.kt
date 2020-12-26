@@ -2,28 +2,29 @@ package com.wenull.homemade.ui.fragments
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.squareup.picasso.Picasso
 import com.wenull.homemade.R
 import com.wenull.homemade.databinding.FragmentCredentialsBinding
-import com.wenull.homemade.ui.activities.HomemadeActivityViewModel
+import com.wenull.homemade.ui.viewmodel.HomemadeViewModel
 import com.wenull.homemade.ui.fragments.base.BaseFragment
+import com.wenull.homemade.utils.helper.Constants
 import java.io.File
+import java.io.FileInputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CredentialsFragment : BaseFragment<FragmentCredentialsBinding, HomemadeActivityViewModel>(){
+class CredentialsFragment : BaseFragment<FragmentCredentialsBinding, HomemadeViewModel>(){
 
     private val REQUEST_TAKE_PHOTO = 1
     private val PICK_IMAGE = 100
@@ -31,18 +32,73 @@ class CredentialsFragment : BaseFragment<FragmentCredentialsBinding, HomemadeAct
 
     override fun getLayout(): Int  = R.layout.fragment_credentials
 
-    override fun getViewModelClass(): Class<HomemadeActivityViewModel>  = HomemadeActivityViewModel::class.java
+    override fun getViewModelClass(): Class<HomemadeViewModel>  = HomemadeViewModel::class.java
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        binding.proceedBtnCredfrag.setOnClickListener {
-            val action = CredentialsFragmentDirections.actionCredentialsFragmentToHomeFragment()
-            findNavController().navigate(action)
-        }
+
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        viewModel.setFirebaseSourceCallback()
+
+        viewModel.toastMessage.observe(viewLifecycleOwner, Observer {
+            it.getContentIfNotHandled().let {
+                if (it != null)
+                    Toast.makeText(activity, it.toString(), Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        viewModel.credentialsState.observe(viewLifecycleOwner, Observer {
+            it.getContentIfNotHandled().let {
+                if(it != null && it == Constants.SUCCESSFUL) {
+                    Toast.makeText(activity, "Cred upload successful", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+
+        viewModel.imageState.observe(viewLifecycleOwner, Observer {
+            it.getContentIfNotHandled().let {
+                if(it != null) {
+                    if (it == Constants.SUCCESSFUL)
+                        Toast.makeText(activity, "Image upload successful", Toast.LENGTH_SHORT).show()
+                    else {
+                        Toast.makeText(activity, "Image upload unsuccessful", Toast.LENGTH_SHORT).show()
+
+                    }
+                }
+            }
+        })
+
+        viewModel.credentialsAndImageState.observe(viewLifecycleOwner, Observer {
+            it.getContentIfNotHandled().let {
+                if(it != null && it == Constants.SUCCESSFUL) {
+                    Toast.makeText(activity, "Cred & Image upload successful", Toast.LENGTH_SHORT).show()
+                    navigateForward()
+                }
+            }
+        })
 
         binding.profilePicCardView.setOnClickListener {
             openGallery()
         }
+
+    }
+
+    private fun navigateForward() {
+        val action = CredentialsFragmentDirections.actionCredentialsFragmentToHomeFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun setFileUriInViewModel(imageUri: Uri) {
+        viewModel.fileUri = imageUri
+    }
+
+    private fun setImageBitmapInViewModel() {
+        binding.profilePicImageView.isDrawingCacheEnabled = true
+        binding.profilePicImageView.buildDrawingCache()
+        if(binding.profilePicImageView.drawable != null)
+        viewModel.bitmap = (binding.profilePicImageView.drawable as BitmapDrawable).bitmap
     }
 
     fun openGallery() {
@@ -85,7 +141,8 @@ class CredentialsFragment : BaseFragment<FragmentCredentialsBinding, HomemadeAct
     var i = 0
 
     private fun setPic() {
-        Picasso.get().load(File(currentPhotoPath)).resize(75,75).centerCrop().into(binding.profilePicImageView)
+        Picasso.get().load(File(currentPhotoPath!!)).resize(75,75).centerCrop().into(binding.profilePicImageView)
+        setImageBitmapInViewModel()
     }
 
     @Throws(IOException::class)
@@ -99,6 +156,8 @@ class CredentialsFragment : BaseFragment<FragmentCredentialsBinding, HomemadeAct
                 storageDir
         )
         currentPhotoPath = image.absolutePath
+
+        setFileUriInViewModel(Uri.fromFile(File(currentPhotoPath!!)))
         return image
     }
 
@@ -112,6 +171,8 @@ class CredentialsFragment : BaseFragment<FragmentCredentialsBinding, HomemadeAct
                 val imageUri = data!!.data
 
                 Picasso.get().load(imageUri).resize(75,75).centerCrop().into(binding.profilePicImageView)
+                setFileUriInViewModel(imageUri!!)
+                setImageBitmapInViewModel()
             }
         }
     }
