@@ -1,7 +1,6 @@
 package com.wenull.homemade.data.remote
 
 import android.app.Activity
-import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import com.google.android.gms.tasks.TaskExecutors
@@ -12,12 +11,12 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.wenull.homemade.utils.helper.Constants
+import com.wenull.homemade.utils.model.FoodPack
 import com.wenull.homemade.utils.model.User
-import com.wenull.homemade.utils.model.UserAddress
-import java.io.ByteArrayOutputStream
 import java.util.concurrent.TimeUnit
 
 class FirebaseSource(private val activity: Activity) {
@@ -28,6 +27,8 @@ class FirebaseSource(private val activity: Activity) {
     private lateinit var firebaseSourceCallback: FirebaseSourceCallback
 
     private val databaseReference = FirebaseDatabase.getInstance().reference
+
+    private val firestore = FirebaseFirestore.getInstance()
 
     fun setFirebaseSourceCallback(listener: FirebaseSourceCallback) {
         this.firebaseSourceCallback = listener
@@ -109,14 +110,12 @@ class FirebaseSource(private val activity: Activity) {
 
     // Auth ends
 
-    // Adding user credentials to database
+    // Adding user credentials to database starts
 
     var haveCredentialsBeenUploaded = false
     var hasImageBeenUploaded = false
 
     fun addUserCredentials(user: User, uri: Uri) {
-
-        val firestore = FirebaseFirestore.getInstance()
 
         firestore.collection(Constants.COLLECTION_USERS)
             .document(auth.currentUser!!.uid)
@@ -154,25 +153,42 @@ class FirebaseSource(private val activity: Activity) {
             firebaseSourceCallback.userImageUploadFailed(exception)
         }
 
-        /*val urlTask = uploadTask.continueWithTask { task ->
-            if (!task.isSuccessful) {
-                firebaseSourceCallback.userImageUploadFailed(task.exception!!)
-            }
-            Log.i("DownloadURL", "${storageReference.downloadUrl}")
-            storageReference.downloadUrl
-        }.addOnCompleteListener { task ->
-            if(task.isSuccessful) {
-                hasImageBeenUploaded = true
-                if(haveCredentialsBeenUploaded && hasImageBeenUploaded) {
-                    firebaseSourceCallback.userCredentialsAndImageUploadSuccessful()
+    }
+
+    // Adding user credentials to database ends
+
+    // Fetching packs data starts
+
+    fun fetchPackDetails() {
+
+        firestore.collection(Constants.FOOD_PACK).get()
+            .addOnSuccessListener { data ->
+
+                if(!data.isEmpty) {
+
+                    val documents = data.documents
+
+                    val packs = ArrayList<FoodPack>()
+
+                    documents.forEach { document ->
+
+                        val pack = FoodPack(
+                            id = document.data!![Constants.FOOD_PACK_ID] as Long,
+                            name = document.data!![Constants.FOOD_PACK_NAME] as String,
+                            description = document.data!![Constants.FOOD_PACK_DESCRIPTION]  as String,
+                            imageName = document.data!![Constants.FOOD_PACK_IMAGE_NAME]  as String
+                        )
+
+                        packs.add(pack)
+                    }
+
+                    Log.i("Packs", packs.toString())
+
+                    firebaseSourceCallback.packDetailsFetchSuccessful(packs)
+
                 }
-                Log.i("ImageState", "Successful")
-                firebaseSourceCallback.userImageUploadSuccessful()
-            } else {
-                hasImageBeenUploaded = false
-                firebaseSourceCallback.userImageUploadFailed(task.exception!!)
+
             }
-        }*/
 
     }
 

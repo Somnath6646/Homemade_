@@ -1,8 +1,6 @@
 package com.wenull.homemade.ui.viewmodel
 
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import androidx.databinding.Bindable
@@ -14,9 +12,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.wenull.homemade.utils.helper.Constants
 import com.wenull.homemade.repositories.HomemadeRepository
 import com.wenull.homemade.utils.helper.Event
+import com.wenull.homemade.utils.model.FoodPack
 import com.wenull.homemade.utils.model.User
 import com.wenull.homemade.utils.model.UserAddress
-import java.io.FileInputStream
 
 class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel(), Observable {
 
@@ -145,6 +143,15 @@ class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel()
         } else {
             repository.eventIndicator.value = Event(Constants.ENTER_ALL_CREDENTIALS)
         }
+    }
+
+    // Getting packs details from the user starts
+
+    val packs: LiveData<ArrayList<FoodPack>>
+        get() = repository.packsLiveData
+
+    fun fetchPackDetails() {
+        repository.fetchPackDetails()
     }
 
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {}

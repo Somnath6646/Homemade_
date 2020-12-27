@@ -3,56 +3,55 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    <ScrollView
+        android:id="@+id/home_fragment"
+        android:layout_width="match_parent"
 
-    android:id="@+id/home_fragment"
-    android:fillViewport="true">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/dull_white"
-            >
+            android:background="@color/dull_white">
 
             <ImageView
                 android:id="@+id/nav_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/nav_food_app"
                 android:layout_margin="@dimen/margin_18dp"
-                android:padding="@dimen/padding_7dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackgroundBorderless"
-                app:layout_constraintTop_toTopOf="parent"
+                android:padding="@dimen/padding_7dp"
+                android:src="@drawable/nav_food_app"
                 app:layout_constraintLeft_toLeftOf="parent"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/label_available_packs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="34sp"
+                android:layout_marginStart="@dimen/margin_25dp"
                 android:layout_marginTop="@dimen/margin_40dp"
                 android:fontFamily="@font/sf_pro_rounded_bold"
+                android:text="@string/label_available_packs"
                 android:textColor="@color/black"
-                app:layout_constraintTop_toBottomOf="@id/nav_icon"
+                android:textSize="34sp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginStart="@dimen/margin_25dp"
-                android:text="@string/label_available_packs"/>
+                app:layout_constraintTop_toBottomOf="@id/nav_icon" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recylerView_available_packs"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/label_available_packs"
                 app:layout_constraintLeft_toLeftOf="parent"
-                />
+                app:layout_constraintTop_toBottomOf="@id/label_available_packs" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+
 </layout>

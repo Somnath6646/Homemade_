@@ -20,6 +20,11 @@ class Constants {
         // Firebase reference values
         const val COLLECTION_USERS = "users"
         const val IMAGES_USERS = "users"
+        const val FOOD_PACK = "packs"
+        const val FOOD_PACK_ID = "id"
+        const val FOOD_PACK_NAME = "name"
+        const val FOOD_PACK_DESCRIPTION = "description"
+        const val FOOD_PACK_IMAGE_NAME = "imageName"
 
     }
 

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "445445312400",
+    "project_id": "homemade-android",
+    "storage_bucket": "homemade-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:445445312400:android:e35c1b5ff9653df07fed15",
+        "android_client_info": {
+          "package_name": "com.wenull.homemade"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "445445312400-f2l61qs9f71duhm9a716k1cfmlpc5dq2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wenull.homemade",
+            "certificate_hash": "53e05bfbf3ddf0c1ef824cfd0a9949d5f43397ea"
+          }
+        },
+        {
+          "client_id": "445445312400-g1pkh755u0khnnuacdvrkda1ej7p52st.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEaTBSkq6Se1LriiIxUMSd3NfZamAlAc0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "445445312400-g1pkh755u0khnnuacdvrkda1ej7p52st.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

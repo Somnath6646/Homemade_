@@ -1,6 +1,5 @@
 package com.wenull.homemade.repositories
 
-import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -11,6 +10,7 @@ import com.wenull.homemade.data.remote.FirebaseSource
 import com.wenull.homemade.data.remote.FirebaseSourceCallback
 import com.wenull.homemade.utils.helper.Constants
 import com.wenull.homemade.utils.helper.Event
+import com.wenull.homemade.utils.model.FoodPack
 import com.wenull.homemade.utils.model.User
 import java.lang.Exception
 
@@ -20,9 +20,11 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
 
     val signInState: MutableLiveData<Event<Boolean>> = MutableLiveData(Event(Constants.FAILED))
     val credentialsState: MutableLiveData<Event<Boolean>> = MutableLiveData(Event(Constants.FAILED))
-    val imageState: MutableLiveData<Event<Boolean>> = MutableLiveData(Event(Constants.FAILED))
+    val imageState: MutableLiveData<Event<Boolean>> = MutableLiveData()
 
     val credentialsAndImageState: MutableLiveData<Event<Boolean>> = MutableLiveData(Event(Constants.FAILED))
+
+    val packsLiveData: MutableLiveData<ArrayList<FoodPack>> = MutableLiveData()
 
     private var haveCredentialsBeenUploaded = false
     private var hasImageBeenUploaded = false
@@ -79,6 +81,10 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
             credentialsAndImageState.value = Event(Constants.SUCCESSFUL)
         }
 
+        override fun packDetailsFetchSuccessful(packs: ArrayList<FoodPack>) {
+            packsLiveData.value = packs
+        }
+
     }
 
     fun setFirebaseSourceCallback() =
@@ -96,6 +102,10 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
 
     fun addUserCredentials(user: User, uri: Uri) {
         firebaseSource.addUserCredentials(user, uri)
+    }
+
+    fun fetchPackDetails() {
+        firebaseSource.fetchPackDetails()
     }
 
 }
