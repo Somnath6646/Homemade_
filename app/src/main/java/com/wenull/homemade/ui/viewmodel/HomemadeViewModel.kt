@@ -13,6 +13,7 @@ import com.wenull.homemade.utils.helper.Constants
 import com.wenull.homemade.repositories.HomemadeRepository
 import com.wenull.homemade.utils.helper.Event
 import com.wenull.homemade.utils.model.FoodPack
+import com.wenull.homemade.utils.model.OrderServer
 import com.wenull.homemade.utils.model.User
 import com.wenull.homemade.utils.model.UserAddress
 
@@ -130,7 +131,7 @@ class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel()
                     firstName = firstName.value!!,
                     lastName = lastName.value!!,
                     address = address,
-                    isEnrolled = false,
+                    packsEnrolled = ArrayList<Long>(),
                     imageName = "${FirebaseAuth.getInstance().currentUser!!.uid}"
                 )
 
@@ -150,8 +151,15 @@ class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel()
     val packs: LiveData<ArrayList<FoodPack>>
         get() = repository.packsLiveData
 
+    val packFoods: LiveData<ArrayList<OrderServer>>
+        get() = repository.packFoodsLiveData
+
     fun fetchPackDetails() {
         repository.fetchPackDetails()
+    }
+
+    fun fetchPackFoodDetails(packId: Long) {
+        repository.fetchPackFoodDetails(packId)
     }
 
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {}

@@ -21,10 +21,15 @@ class Constants {
         const val COLLECTION_USERS = "users"
         const val IMAGES_USERS = "users"
         const val FOOD_PACK = "packs"
-        const val FOOD_PACK_ID = "id"
-        const val FOOD_PACK_NAME = "name"
-        const val FOOD_PACK_DESCRIPTION = "description"
-        const val FOOD_PACK_IMAGE_NAME = "imageName"
+        const val FOODS = "foods"
+        const val PACKS_ = "packs_"
+        const val FIELD_ID = "id"
+        const val FIELD_NAME = "name"
+        const val FIELD_DESCRIPTION = "description"
+        const val FIELD_IMAGE_NAME = "imageName"
+        const val FIELD_DAY = "day"
+        const val FIELD_PRICE = "price"
+        const val FIELD_PACK_ID = "packId"
 
     }
 

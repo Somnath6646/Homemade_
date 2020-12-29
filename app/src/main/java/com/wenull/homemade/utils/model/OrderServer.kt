@@ -1,8 +1,11 @@
 package com.wenull.homemade.utils.model
 
 data class OrderServer(
+    val id: Long,
     val name: String,
-    val contents: String,
+    val description: String,
     val price: String,
-    val urlToImage: String
+    val day: String,
+    val imageName: String,
+    val packId: Long
 )

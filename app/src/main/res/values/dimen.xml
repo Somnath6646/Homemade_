@@ -23,6 +23,7 @@
     <dimen name="illustration_margin_top">80dp</dimen>
     <dimen name="margin_32dp">32dp</dimen>
     <dimen name="margin_8dp">8dp</dimen>
+    <dimen name="margin_6dp">6dp</dimen>
     <dimen name="margin_16dp">16dp</dimen>
     <dimen name="margin_10dp">10dp</dimen>
 

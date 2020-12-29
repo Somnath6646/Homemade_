@@ -11,6 +11,7 @@ import com.wenull.homemade.data.remote.FirebaseSourceCallback
 import com.wenull.homemade.utils.helper.Constants
 import com.wenull.homemade.utils.helper.Event
 import com.wenull.homemade.utils.model.FoodPack
+import com.wenull.homemade.utils.model.OrderServer
 import com.wenull.homemade.utils.model.User
 import java.lang.Exception
 
@@ -25,6 +26,7 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
     val credentialsAndImageState: MutableLiveData<Event<Boolean>> = MutableLiveData(Event(Constants.FAILED))
 
     val packsLiveData: MutableLiveData<ArrayList<FoodPack>> = MutableLiveData()
+    val packFoodsLiveData: MutableLiveData<ArrayList<OrderServer>> = MutableLiveData()
 
     private var haveCredentialsBeenUploaded = false
     private var hasImageBeenUploaded = false
@@ -85,6 +87,11 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
             packsLiveData.value = packs
         }
 
+        override fun packFoodDetailsFetchSuccessful(foods: ArrayList<OrderServer>) {
+            packFoodsLiveData.value = foods
+            Log.i("Foods", "$foods")
+        }
+
     }
 
     fun setFirebaseSourceCallback() =
@@ -106,6 +113,10 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
 
     fun fetchPackDetails() {
         firebaseSource.fetchPackDetails()
+    }
+
+    fun fetchPackFoodDetails(packId: Long) {
+        firebaseSource.fetchPackFoodDetails(packId)
     }
 
 }

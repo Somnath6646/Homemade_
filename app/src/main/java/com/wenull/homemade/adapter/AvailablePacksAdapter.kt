@@ -15,14 +15,14 @@ import com.wenull.homemade.databinding.ItemAvailablePacksBinding
 import com.wenull.homemade.utils.helper.Constants
 import com.wenull.homemade.utils.model.FoodPack
 
-class AvailablePacksAdapter : RecyclerView.Adapter<AvailablePacksViewHolder>() {
+class AvailablePacksAdapter(private val onClick: (FoodPack) -> Unit) : RecyclerView.Adapter<AvailablePacksViewHolder>() {
 
     private val _packs = ArrayList<FoodPack>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AvailablePacksViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = DataBindingUtil.inflate<ItemAvailablePacksBinding>(inflater, R.layout.item_available_packs, parent, false)
-        return AvailablePacksViewHolder(binding)
+        return AvailablePacksViewHolder(binding, onClick)
     }
 
     override fun getItemCount(): Int = _packs.size
@@ -38,7 +38,7 @@ class AvailablePacksAdapter : RecyclerView.Adapter<AvailablePacksViewHolder>() {
     }
 }
 
-class AvailablePacksViewHolder(private val binding: ItemAvailablePacksBinding) : RecyclerView.ViewHolder(binding.root) {
+class AvailablePacksViewHolder(private val binding: ItemAvailablePacksBinding, private val onClick: (FoodPack) -> Unit) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(pack: FoodPack) {
 
@@ -63,6 +63,8 @@ class AvailablePacksViewHolder(private val binding: ItemAvailablePacksBinding) :
 
         binding.packName.text = pack.name
         binding.packShortDescription.text = pack.description
+
+        binding.cardView.setOnClickListener { onClick(pack) }
 
     }
 

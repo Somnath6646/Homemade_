@@ -6,7 +6,6 @@ data class User(
     val firstName: String,
     val lastName: String,
     val address: UserAddress,
-    @field:JvmField
-    val isEnrolled: Boolean,
+    val packsEnrolled: ArrayList<Long>,
     val imageName: String
 )

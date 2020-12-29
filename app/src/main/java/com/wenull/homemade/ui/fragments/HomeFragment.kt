@@ -5,19 +5,18 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 import com.wenull.homemade.R
+import com.wenull.homemade.adapter.AvailableFoodsAdapter
 import com.wenull.homemade.adapter.AvailablePacksAdapter
 import com.wenull.homemade.databinding.FragmentHomeBinding
 import com.wenull.homemade.ui.viewmodel.HomemadeViewModel
 import com.wenull.homemade.ui.fragments.base.BaseFragment
-import com.wenull.homemade.utils.helper.Constants
+import com.wenull.homemade.utils.model.FoodPack
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>() {
 
-    private lateinit var adapter: AvailablePacksAdapter
+    private lateinit var packsAdapter: AvailablePacksAdapter
+    private lateinit var foodsAdapter: AvailableFoodsAdapter
 
     override fun getLayout(): Int = R.layout.fragment_home
 
@@ -49,17 +48,31 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>() {
     private fun updateLists() {
         viewModel.fetchPackDetails()
         viewModel.packs.observe(viewLifecycleOwner, Observer { packs ->
-            adapter.setList(packs)
+            packsAdapter.setList(packs)
+        })
+        viewModel.packFoods.observe(viewLifecycleOwner, Observer { packFoods ->
+            foodsAdapter.setList(packFoods)
         })
     }
 
-    private fun setUpRecyclerView() {
-        adapter = AvailablePacksAdapter()
-        binding.layoutContent.recylerViewAvailablePacks.adapter = adapter
-        binding.layoutContent.recylerViewAvailablePacks.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        updateLists()
+    fun packOnClick(pack: FoodPack) {
+        updateFoods(pack.id)
     }
 
-    private fun displayPacks() {}
+    private fun updateFoods(packId: Long) {
+        viewModel.fetchPackFoodDetails(packId)
+    }
+
+    private fun setUpRecyclerView() {
+        // Packs adapter
+        packsAdapter = AvailablePacksAdapter { pack -> packOnClick(pack) }
+        binding.layoutContent.recylerViewAvailablePacks.adapter = packsAdapter
+        binding.layoutContent.recylerViewAvailablePacks.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        updateLists()
+        // Foods adapter
+        foodsAdapter = AvailableFoodsAdapter()
+        binding.layoutContent.recyclerViewAvailableFoods.adapter = foodsAdapter
+        binding.layoutContent.recyclerViewAvailableFoods.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    }
 
 }

@@ -11,11 +11,11 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.wenull.homemade.utils.helper.Constants
 import com.wenull.homemade.utils.model.FoodPack
+import com.wenull.homemade.utils.model.OrderServer
 import com.wenull.homemade.utils.model.User
 import java.util.concurrent.TimeUnit
 
@@ -173,10 +173,10 @@ class FirebaseSource(private val activity: Activity) {
                     documents.forEach { document ->
 
                         val pack = FoodPack(
-                            id = document.data!![Constants.FOOD_PACK_ID] as Long,
-                            name = document.data!![Constants.FOOD_PACK_NAME] as String,
-                            description = document.data!![Constants.FOOD_PACK_DESCRIPTION]  as String,
-                            imageName = document.data!![Constants.FOOD_PACK_IMAGE_NAME]  as String
+                            id = document.data!![Constants.FIELD_ID] as Long,
+                            name = document.data!![Constants.FIELD_NAME] as String,
+                            description = document.data!![Constants.FIELD_DESCRIPTION]  as String,
+                            imageName = document.data!![Constants.FIELD_IMAGE_NAME]  as String
                         )
 
                         packs.add(pack)
@@ -188,6 +188,43 @@ class FirebaseSource(private val activity: Activity) {
 
                 }
 
+            }
+
+    }
+
+    fun fetchPackFoodDetails(packId: Long) {
+
+        firestore.collection(Constants.FOOD_PACK).document(packId.toString())
+            .collection(Constants.FOODS).get()
+            .addOnSuccessListener { snapshot ->
+
+                val documents = snapshot.documents
+
+                val foods = ArrayList<OrderServer>()
+
+                documents.forEach { document ->
+
+                    val food = OrderServer(
+                        id = document!![Constants.FIELD_ID] as Long,
+                        name = document!![Constants.FIELD_NAME] as String,
+                        description = document!![Constants.FIELD_DESCRIPTION] as String,
+                        price = document!![Constants.FIELD_PRICE] as String,
+                        day = document!![Constants.FIELD_DAY] as String,
+                        imageName = document!![Constants.FIELD_IMAGE_NAME] as String,
+                        packId = document!![Constants.FIELD_PACK_ID] as Long
+                    )
+
+                    Log.i("Food", "$food")
+
+                    foods.add(food)
+
+                }
+
+                firebaseSourceCallback.packFoodDetailsFetchSuccessful(foods)
+
+            }.addOnFailureListener {
+                Log.i("Exception", "In fetching food details")
+                    it.printStackTrace()
             }
 
     }

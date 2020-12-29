@@ -4,6 +4,7 @@ import com.google.firebase.FirebaseException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.wenull.homemade.utils.model.FoodPack
+import com.wenull.homemade.utils.model.OrderServer
 import java.lang.Exception
 
 interface FirebaseSourceCallback {
@@ -27,6 +28,6 @@ interface FirebaseSourceCallback {
     // Getting pack details
 
     fun packDetailsFetchSuccessful(packs: ArrayList<FoodPack>)
-
+    fun packFoodDetailsFetchSuccessful(foods: ArrayList<OrderServer>)
 
 }
