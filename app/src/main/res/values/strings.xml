@@ -23,4 +23,5 @@
     <string name="send_otp_btn_text">Send OTP</string>
     <string name="sample_address">49,\n Block C,\n Bangur Avenue,\n Kolkata - 700055</string>
     <string name="available_foods">Available foods</string>
+    <string name="label_fragment_pack_contents">Pack Contents</string>
 </resources>

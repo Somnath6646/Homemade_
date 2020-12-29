@@ -25,7 +25,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        binding.lifecycleOwner = viewLifecycleOwner
+        binding.lifecycleOwner = requireActivity()
 
         viewModel.setFirebaseSourceCallback()
 
@@ -45,6 +45,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>() {
 
     }
 
+
+
     private fun updateLists() {
         viewModel.fetchPackDetails()
         viewModel.packs.observe(viewLifecycleOwner, Observer { packs ->
@@ -57,6 +59,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>() {
 
     fun packOnClick(pack: FoodPack) {
         updateFoods(pack.id)
+
+        //navigating to its content
+        val action = HomeFragmentDirections.actionHomeFragmentToPackContentFragment()
+        findNavController().navigate(action)
     }
 
     private fun updateFoods(packId: Long) {

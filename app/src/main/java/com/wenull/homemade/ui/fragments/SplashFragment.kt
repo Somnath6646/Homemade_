@@ -24,6 +24,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, HomemadeViewModel>() 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        binding.lifecycleOwner = this
 
         val auth = FirebaseAuth.getInstance()
 

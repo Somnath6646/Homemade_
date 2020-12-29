@@ -11,10 +11,12 @@ import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 import com.wenull.homemade.R
 import com.wenull.homemade.databinding.ItemAvailableFoodsBinding
+import com.wenull.homemade.generated.callback.OnClickListener
 import com.wenull.homemade.utils.helper.Constants
+import com.wenull.homemade.utils.model.FoodPack
 import com.wenull.homemade.utils.model.OrderServer
 
-class AvailableFoodsAdapter : RecyclerView.Adapter<AvailableFoodsViewHolder>(){
+class AvailableFoodsAdapter: RecyclerView.Adapter<AvailableFoodsViewHolder>(){
 
     private val foods = ArrayList<OrderServer>()
 
@@ -62,6 +64,8 @@ class AvailableFoodsViewHolder(private val binding: ItemAvailableFoodsBinding): 
         binding.foodDescription.text = food.description
         binding.foodPrice.text = food.price
         binding.dayOfFood.text = food.day
+
+
 
     }
 

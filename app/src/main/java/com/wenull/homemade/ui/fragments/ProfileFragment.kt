@@ -20,6 +20,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, HomemadeViewModel>(
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        binding.lifecycleOwner = this
         setUpRecyclerView()
         binding.profileBackBtn.setOnClickListener {
             findNavController().popBackStack()

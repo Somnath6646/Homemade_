@@ -24,8 +24,7 @@
             app:exitAnim="@anim/out_to_left"
             app:popEnterAnim="@anim/in_from_left"
             app:popExitAnim="@anim/out_to_right"
-            app:popUpTo="@id/homeFragment"
-            app:popUpToInclusive="true" />
+            app:popUpTo="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/signupLoginFragment"
@@ -61,14 +60,30 @@
         android:label="HomeFragment">
         <action
             android:id="@+id/action_homeFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/in_from_right"
+            app:exitAnim="@anim/out_to_left"
+            app:popEnterAnim="@anim/in_from_left"
+            app:popExitAnim="@anim/out_to_right"
+            app:popUpTo="@id/profileFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_homeFragment_to_packContentFragment"
+            app:destination="@id/packContentFragment"
+            app:enterAnim="@anim/in_from_right"
+            app:exitAnim="@anim/out_to_left"
+            app:popEnterAnim="@anim/in_from_left"
+            app:popExitAnim="@anim/out_to_right"
+            app:popUpTo="@id/packContentFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.wenull.homemade.ui.fragments.ProfileFragment"
         android:label="ProfileFragment"
-        app:enterAnim="@anim/in_from_right"
-        app:exitAnim="@anim/out_to_left"
-        app:popEnterAnim="@anim/in_from_left"
-        app:popExitAnim="@anim/out_to_right" />
+        />
+    <fragment
+        android:id="@+id/packContentFragment"
+        android:name="com.wenull.homemade.ui.fragments.PackContentFragment"
+        android:label="PackContentFragment" />
 </navigation>
