@@ -10,6 +10,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/dull_white"
             tools:context=".ui.fragments.ProfileFragment">
 
             <ImageView
@@ -103,7 +104,7 @@
                 android:id="@+id/yourpacks_profilefrag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Your packs"
+                android:text="@string/label_your_packs"
                 app:layout_constraintTop_toBottomOf="@id/address_profilefrag"
                 android:layout_marginStart="@dimen/margin_30dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -115,12 +116,15 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recylerView_your_packs"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_15dp"
+                android:layout_marginStart="@dimen/margin_15dp"
+                android:layout_marginEnd="@dimen/padding_15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/yourpacks_profilefrag" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/yourpacks_profilefrag" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

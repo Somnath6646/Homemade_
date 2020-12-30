@@ -16,7 +16,7 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="EditTextStyle" parent="TextAppearance.MaterialComponents.Subtitle1">
+    <style name="EditTextStyle" >
 
         <item name="colorSurface">@android:color/transparent</item>
         <item name="android:textSize">@dimen/text_size_14sp</item>
@@ -24,7 +24,7 @@
 
     </style>
 
-    <style name="hintTextStyle" parent="TextAppearance.MaterialComponents.Overline">
+    <style name="hintTextStyle" >
 
         <item name="colorSurface">@android:color/transparent</item>
         <item name="android:textSize">@dimen/text_size_14sp</item>

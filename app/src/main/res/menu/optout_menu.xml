@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:id="@+id/selective_optout" android:title="Selective Optout"/>
+    <item android:id="@+id/forever_optout" android:title="Forever Optout"/>
+
+</menu>

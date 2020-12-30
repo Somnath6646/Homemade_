@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="@dimen/margin_25dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/optoutbottomsheet_heading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose days to optout"
+            android:fontFamily="@font/sf_pro_rounded_semibold"
+            android:textSize="21sp"
+            android:padding="@dimen/padding_15dp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            />
+        <CalendarView
+            android:id="@+id/optoutbottomsheet_calender_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_8dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/text_size_18sp"
+                android:text="Cancel"
+                android:padding="@dimen/padding_7dp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/sf_pro_rounded_semibold"
+                android:textAlignment="center"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/text_size_18sp"
+                android:text="Done"
+                android:padding="@dimen/padding_7dp"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/sf_pro_rounded_semibold"
+                android:textAlignment="center"
+                />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
+</layout>

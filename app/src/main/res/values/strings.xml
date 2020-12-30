@@ -21,7 +21,8 @@
     <string name="sign_in_btn_text">Sign in</string>
     <string name="proceed_text_cred">Proceed</string>
     <string name="send_otp_btn_text">Send OTP</string>
-    <string name="sample_address">49,\n Block C,\n Bangur Avenue,\n Kolkata - 700055</string>
+    <string name="sample_address">49,\nBlock C,\nBangur Avenue,\nKolkata - 700055</string>
     <string name="available_foods">Available foods</string>
     <string name="label_fragment_pack_contents">Pack Contents</string>
+    <string name="label_your_packs">Your packs</string>
 </resources>
