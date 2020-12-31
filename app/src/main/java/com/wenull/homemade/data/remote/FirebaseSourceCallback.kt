@@ -25,6 +25,10 @@ interface FirebaseSourceCallback {
     fun userImageUploadFailed(e: Exception)
     fun userCredentialsAndImageUploadSuccessful()
 
+    // Check if user data already exists
+
+    fun checkIfUserExists(exists: Boolean)
+
     // Getting pack details
 
     fun packDetailsFetchSuccessful(packs: ArrayList<FoodPack>)

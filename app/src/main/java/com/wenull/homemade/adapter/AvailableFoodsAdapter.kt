@@ -5,24 +5,26 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 import com.wenull.homemade.R
 import com.wenull.homemade.databinding.ItemAvailableFoodsBinding
-import com.wenull.homemade.generated.callback.OnClickListener
 import com.wenull.homemade.utils.helper.Constants
-import com.wenull.homemade.utils.model.FoodPack
 import com.wenull.homemade.utils.model.OrderServer
 
-class AvailableFoodsAdapter: RecyclerView.Adapter<AvailableFoodsViewHolder>(){
+class AvailableFoodsAdapter : RecyclerView.Adapter<AvailableFoodsViewHolder>() {
 
     private val foods = ArrayList<OrderServer>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AvailableFoodsViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = DataBindingUtil.inflate<ItemAvailableFoodsBinding>(inflater, R.layout.item_available_foods, parent, false)
+        val binding = DataBindingUtil.inflate<ItemAvailableFoodsBinding>(
+            inflater,
+            R.layout.item_available_foods,
+            parent,
+            false
+        )
         return AvailableFoodsViewHolder(binding)
     }
 
@@ -32,7 +34,7 @@ class AvailableFoodsAdapter: RecyclerView.Adapter<AvailableFoodsViewHolder>(){
         holder.bind(foods[position])
     }
 
-    fun setList(foodList: List<OrderServer>){
+    fun setList(foodList: List<OrderServer>) {
         foods.clear()
         foods.addAll(foodList)
         notifyDataSetChanged()
@@ -42,9 +44,11 @@ class AvailableFoodsAdapter: RecyclerView.Adapter<AvailableFoodsViewHolder>(){
 class AvailableFoodsViewHolder(private val binding: ItemAvailableFoodsBinding): RecyclerView.ViewHolder(binding.root) {
     fun bind(food: OrderServer) {
 
+        val downloadReference = "${Constants.FOODS}/${Constants.PACK_}${food.packId}/${food.imageName}"
+
         val imageReference =
-            Firebase.storage.reference.child("${Constants.FOODS}/${Constants.PACKS_}${food.packId}/${food.imageName}")
-        Log.i("DownloadReference", "${Constants.FOODS}/${Constants.PACKS_}${food.packId}/${food.imageName}")
+            Firebase.storage.reference.child(downloadReference)
+        Log.i("DownloadReference", downloadReference)
 
         imageReference.downloadUrl
             .addOnSuccessListener { uri ->
@@ -64,8 +68,6 @@ class AvailableFoodsViewHolder(private val binding: ItemAvailableFoodsBinding): 
         binding.foodDescription.text = food.description
         binding.foodPrice.text = food.price
         binding.dayOfFood.text = food.day
-
-
 
     }
 

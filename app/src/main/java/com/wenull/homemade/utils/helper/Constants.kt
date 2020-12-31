@@ -1,5 +1,8 @@
 package com.wenull.homemade.utils.helper
 
+import androidx.datastore.preferences.core.preferencesKey
+import com.wenull.homemade.utils.model.User
+
 class Constants {
 
     companion object {
@@ -16,13 +19,16 @@ class Constants {
         // Values
         const val SUCCESSFUL = true
         const val FAILED = false
+        const val FRAGMENT_PACK_ID = "packId"
+        const val USER_DATA_EXISTS = true
+        const val USER_DATA_DOES_NOT_EXIST = false
 
         // Firebase reference values
         const val COLLECTION_USERS = "users"
         const val IMAGES_USERS = "users"
         const val FOOD_PACK = "packs"
         const val FOODS = "foods"
-        const val PACKS_ = "packs_"
+        const val PACK_ = "pack_"
         const val FIELD_ID = "id"
         const val FIELD_NAME = "name"
         const val FIELD_DESCRIPTION = "description"

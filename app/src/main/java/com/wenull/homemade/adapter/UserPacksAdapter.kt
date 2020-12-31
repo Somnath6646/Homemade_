@@ -3,6 +3,7 @@ package com.wenull.homemade.adapter
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +17,7 @@ import com.wenull.homemade.utils.helper.Constants
 import com.wenull.homemade.utils.model.FoodPack
 
 
-class UserPacksAdapter(private val optOutMenuClickListener: (FoodPack) -> Unit) : RecyclerView.Adapter<UserPacksViewHolder>(){
+class UserPacksAdapter(private val optOutMenuClickListener: (FoodPack, View) -> Unit) : RecyclerView.Adapter<UserPacksViewHolder>(){
 
     private val _packs = ArrayList<FoodPack>()
 
@@ -39,7 +40,7 @@ class UserPacksAdapter(private val optOutMenuClickListener: (FoodPack) -> Unit) 
     }
 }
 
-class UserPacksViewHolder(private val binding: ItemUserOwnedPacksBinding, private val optOutMenuClickListener: (FoodPack) -> Unit): RecyclerView.ViewHolder(binding.root){
+class UserPacksViewHolder(private val binding: ItemUserOwnedPacksBinding, private val optOutMenuClickListener: (FoodPack, View) -> Unit): RecyclerView.ViewHolder(binding.root){
     fun bind(pack: FoodPack){
 
         val imageReference =
@@ -65,7 +66,7 @@ class UserPacksViewHolder(private val binding: ItemUserOwnedPacksBinding, privat
         binding.packShortDescription.text = pack.description
 
         binding.optoutMenuBtn.setOnClickListener {
-            optOutMenuClickListener(pack)
+            optOutMenuClickListener(pack, binding.itemPackContainer)
         }
     }
 }

@@ -173,6 +173,7 @@ class CredentialsFragment : BaseFragment<FragmentCredentialsBinding, HomemadeVie
                 Picasso.get().load(imageUri).resize(75,75).centerCrop().into(binding.profilePicImageView)
                 setFileUriInViewModel(imageUri!!)
                 setImageBitmapInViewModel()
+
             }
         }
     }

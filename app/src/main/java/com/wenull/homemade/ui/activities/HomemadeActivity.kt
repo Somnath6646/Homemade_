@@ -26,8 +26,6 @@ class HomemadeActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this, factory).get(HomemadeViewModel::class.java)
 
-
-
     }
 
 }

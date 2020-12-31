@@ -2,6 +2,7 @@ package com.wenull.homemade.ui.fragments
 
 import android.os.Bundle
 import android.view.MenuInflater
+import android.view.View
 import android.widget.PopupMenu
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -18,14 +19,14 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, HomemadeViewModel>(
 
     private lateinit var adapter: UserPacksAdapter
 
-    override fun getLayout(): Int  = R.layout.fragment_profile
+    override fun getLayout(): Int = R.layout.fragment_profile
 
     override fun getViewModelClass(): Class<HomemadeViewModel> = HomemadeViewModel::class.java
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        binding.lifecycleOwner = requireActivity()
 
+        binding.lifecycleOwner = viewLifecycleOwner
         viewModel.setFirebaseSourceCallback()
 
         setUpRecyclerView()
@@ -34,14 +35,14 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, HomemadeViewModel>(
         }
     }
 
-    private fun setUpRecyclerView(){
-        adapter = UserPacksAdapter{
-            onOptOutMenuClick(foodPack = it)
-        }
+    private fun setUpRecyclerView() {
 
+        adapter = UserPacksAdapter {pack, view -> onOptOutMenuClick(pack, view)}
         binding.recylerViewYourPacks.adapter = adapter
-        binding.recylerViewYourPacks.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.recylerViewYourPacks.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         displayPacks()
+
     }
 
     private fun displayPacks() {
@@ -51,7 +52,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, HomemadeViewModel>(
         })
     }
 
-    private fun onOptOutMenuClick(foodPack: FoodPack){
+    private fun onOptOutMenuClick(pack: FoodPack, view: View) {
         val popup = PopupMenu(requireContext(), view)
         val menuInflater = MenuInflater(requireContext())
 
@@ -59,27 +60,26 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, HomemadeViewModel>(
         popup.show()
 
         popup.setOnMenuItemClickListener { item ->
-            when(item.itemId) {
+            when (item.itemId) {
                 R.id.forever_optout -> {
                     //foreveroptout
-                    foreverOptout(foodPack)
+                    foreverOptout(pack)
                     return@setOnMenuItemClickListener true
                 }
 
                 R.id.selective_optout -> {
-                    val action = ProfileFragmentDirections.actionProfileFragmentToOptoutBottomsheetFragment()
+                    val action =
+                        ProfileFragmentDirections.actionProfileFragmentToOptoutBottomsheetFragment()
                     findNavController().navigate(action)
                     return@setOnMenuItemClickListener true
                 }
 
-                else ->  false //nothing
+                else -> false //nothing
             }
         }
 
     }
 
-    private fun foreverOptout(foodPack: FoodPack){
+    private fun foreverOptout(foodPack: FoodPack) {}
 
-    }
-    }
-
+}

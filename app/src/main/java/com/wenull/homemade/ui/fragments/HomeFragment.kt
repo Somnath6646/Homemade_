@@ -2,6 +2,7 @@ package com.wenull.homemade.ui.fragments
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +12,7 @@ import com.wenull.homemade.adapter.AvailablePacksAdapter
 import com.wenull.homemade.databinding.FragmentHomeBinding
 import com.wenull.homemade.ui.viewmodel.HomemadeViewModel
 import com.wenull.homemade.ui.fragments.base.BaseFragment
+import com.wenull.homemade.utils.helper.Constants
 import com.wenull.homemade.utils.model.FoodPack
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>() {
@@ -25,7 +27,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        binding.lifecycleOwner = requireActivity()
+        binding.lifecycleOwner = viewLifecycleOwner
 
         viewModel.setFirebaseSourceCallback()
 
@@ -45,8 +47,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>() {
 
     }
 
-
-
     private fun updateLists() {
         viewModel.fetchPackDetails()
         viewModel.packs.observe(viewLifecycleOwner, Observer { packs ->
@@ -57,12 +57,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>() {
         })
     }
 
-    fun packOnClick(pack: FoodPack) {
-        updateFoods(pack.id)
-
+    private fun packOnClick(pack: FoodPack) {
         //navigating to its content
         val action = HomeFragmentDirections.actionHomeFragmentToPackContentFragment()
-        findNavController().navigate(action)
+        val bundle = bundleOf(Constants.FRAGMENT_PACK_ID to pack.id)
+        findNavController().navigate(action.actionId, bundle)
     }
 
     private fun updateFoods(packId: Long) {
