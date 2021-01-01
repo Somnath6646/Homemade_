@@ -27,8 +27,11 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
 
     val packsLiveData: MutableLiveData<ArrayList<FoodPack>> = MutableLiveData()
     val packFoodsLiveData: MutableLiveData<ArrayList<OrderServer>> = MutableLiveData()
+    val todayFoodLiveData: MutableLiveData<OrderServer> = MutableLiveData()
 
     val userExists: MutableLiveData<Event<Boolean>> = MutableLiveData()
+
+    val userData: MutableLiveData<Event<User>> = MutableLiveData()
 
     private var haveCredentialsBeenUploaded = false
     private var hasImageBeenUploaded = false
@@ -89,6 +92,14 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
             userExists.value = Event(exists)
         }
 
+        override fun fetchUserData(user: User) {
+            userData.value = Event(user)
+        }
+
+        override fun fetchTodayFoodDetails(food: OrderServer) {
+            todayFoodLiveData.value = food
+        }
+
         override fun packDetailsFetchSuccessful(packs: ArrayList<FoodPack>) {
             packsLiveData.value = packs
         }
@@ -127,6 +138,14 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
 
     fun checkIfUserExists(uid: String) {
         firebaseSource.checkIfUserExists(uid)
+    }
+
+    fun fetchUserData(uid: String) {
+        firebaseSource.fetchUserData(uid)
+    }
+
+    fun fetchTodayFoodDetails(day: String, packId: Long) {
+        firebaseSource.fetchTodayFoodDetails(day, packId)
     }
 
 }

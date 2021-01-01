@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
@@ -44,7 +43,7 @@ class UserPacksViewHolder(private val binding: ItemUserOwnedPacksBinding, privat
     fun bind(pack: FoodPack){
 
         val imageReference =
-            Firebase.storage.reference.child("${Constants.FOOD_PACK}/${pack.imageName}")
+            Firebase.storage.reference.child("${Constants.COLLECTION_FOOD_PACK}/${pack.imageName}")
 
         var imageUrl: Uri? = null
 

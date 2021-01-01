@@ -107,7 +107,7 @@ class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel()
 
         if(fileUri != null) {
 
-            Log.i("FileURI", "${fileUri.toString()}")
+            Log.i("FileURI", fileUri.toString())
 
             if((firstName.value != null && !firstName.value.isNullOrEmpty()) &&
                 (lastName.value != null && !lastName.value.isNullOrEmpty()) &&
@@ -171,6 +171,26 @@ class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel()
 
     fun fetchPackFoodDetails(packId: Long) {
         repository.fetchPackFoodDetails(packId)
+    }
+
+    // Getting packs details from the user starts ends
+
+    // Getting user data
+
+    val userData: LiveData<Event<User>>
+        get() = repository.userData
+
+    fun fetchUserData(uid: String) {
+        repository.fetchUserData(uid)
+    }
+
+    // Getting today's food details
+
+    val todayFood: LiveData<OrderServer>
+        get() = repository.todayFoodLiveData
+
+    fun fetchTodayFoodDetails(day: String, packId: Long) {
+        repository.fetchTodayFoodDetails(day, packId)
     }
 
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {}
