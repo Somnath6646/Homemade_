@@ -33,6 +33,8 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
 
     val userData: MutableLiveData<Event<User>> = MutableLiveData()
 
+    val userPacksEnrolledLiveData: MutableLiveData<ArrayList<Long>> = MutableLiveData()
+
     private var haveCredentialsBeenUploaded = false
     private var hasImageBeenUploaded = false
 
@@ -109,6 +111,10 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
             Log.i("Foods in repo", "$foods")
         }
 
+        override fun packEnrolledDataChanged(newPackIds: ArrayList<Long>) {
+            userPacksEnrolledLiveData.value = newPackIds
+        }
+
     }
 
     fun setFirebaseSourceCallback() =
@@ -146,6 +152,10 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
 
     fun fetchTodayFoodDetails(day: String, packId: Long) {
         firebaseSource.fetchTodayFoodDetails(day, packId)
+    }
+
+    fun enrollOrUnenroll(uid: String, newPackIds: ArrayList<Long>) {
+        firebaseSource.enrollOrUnenroll(uid, newPackIds)
     }
 
 }

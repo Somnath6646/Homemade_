@@ -18,8 +18,8 @@ import com.wenull.homemade.ui.fragments.base.BaseFragment
 import com.wenull.homemade.utils.helper.Constants
 import com.wenull.homemade.utils.model.FoodPack
 import com.wenull.homemade.utils.model.OrderServer
+import com.wenull.homemade.utils.model.User
 import java.text.SimpleDateFormat
-import java.time.DayOfWeek
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -29,6 +29,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>() {
     private lateinit var foodsAdapter: AvailableFoodsAdapter
 
     private val auth = FirebaseAuth.getInstance()
+
+    private lateinit var user: User
 
     override fun getLayout(): Int = R.layout.fragment_home
 
@@ -53,14 +55,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>() {
             findNavController().navigate(action)
         }
 
+        checkUserPacksData()
+
         fetchUserData()
 
     }
 
-    private fun updateLists() {
+    private fun updateLists(packIds: ArrayList<Long>) {
         viewModel.fetchPackDetails()
         viewModel.packs.observe(viewLifecycleOwner, Observer { packs ->
-            packsAdapter.setList(packs)
+            packsAdapter.setList(packs, packIds)
         })
         viewModel.packFoods.observe(viewLifecycleOwner, Observer { packFoods ->
             foodsAdapter.setList(packFoods)
@@ -73,18 +77,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>() {
 
         viewModel.userData.observe(viewLifecycleOwner, Observer { event ->
 
-            if(event != null) {
+            event?.getContentIfNotHandled()?.let { user ->
 
-                event.getContentIfNotHandled().let { user ->
+                this.user = user
 
-                    val pack = user!!.packsEnrolled
+                val packs = user.packsEnrolled
 
-                    if(pack.size > 0) {
-                        setUserPackAndFoodRecyclerView(pack[0])
-                    } else {
-                        setUpRecyclerView()
-                    }
+                Log.i("Packs", "$packs")
 
+                if(packs.size > 0) {
+                    setUserPackAndFoodRecyclerView(packs)
+                } else {
+                    setUpRecyclerView(ArrayList())
                 }
 
             }
@@ -93,30 +97,37 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>() {
 
     }
 
-    private fun setUserPackAndFoodRecyclerView(packId: Long) {
+    private fun setUserPackAndFoodRecyclerView(packIds: ArrayList<Long>) {
 
         binding.layoutContent.labelFoods.visibility = View.VISIBLE
-        binding.layoutContent.labelFoods.text = Constants.YOUR_FOODS
+        binding.layoutContent.labelFoods.text = Constants.TODAYS_MEAL
         binding.layoutContent.recyclerViewAvailableFoods.visibility = View.VISIBLE
-        binding.layoutContent.labelPacks.text = Constants.YOUR_PACKS
+        binding.layoutContent.labelPacks.text = Constants.ALL_PACKS
 
-        packsAdapter = AvailablePacksAdapter { pack -> packOnClick(pack) }
+        packsAdapter = AvailablePacksAdapter(
+            { pack -> packOnClick(pack) },
+            { newPackIds -> enrollButtonOnclick(newPackIds) }
+        )
         binding.layoutContent.recylerViewAvailablePacks.adapter = packsAdapter
         binding.layoutContent.recylerViewAvailablePacks.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        updateLists()
+        updateLists(packIds)
         // Foods adapter
         foodsAdapter = AvailableFoodsAdapter()
         binding.layoutContent.recyclerViewAvailableFoods.adapter = foodsAdapter
         binding.layoutContent.recyclerViewAvailableFoods.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        updateFoods(packId)
+        updateFoods(packIds[0])
 
     }
 
     private fun packOnClick(pack: FoodPack) {
-        //navigating to its content
+        // navigating to its content
         val action = HomeFragmentDirections.actionHomeFragmentToPackContentFragment()
         val bundle = bundleOf(Constants.FRAGMENT_PACK_ID to pack.id)
         findNavController().navigate(action.actionId, bundle)
+    }
+
+    private fun enrollButtonOnclick(newPackIds: ArrayList<Long>) {
+        viewModel.enrollOrUnenroll(auth.currentUser!!.uid, newPackIds)
     }
 
     private fun updateFoods(packId: Long) {
@@ -128,16 +139,31 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>() {
         })
     }
 
-    private fun setUpRecyclerView() {
+    private fun setUpRecyclerView(packIds: ArrayList<Long>) {
+        binding.layoutContent.labelFoods.visibility = View.GONE
+        binding.layoutContent.labelFoods.text = Constants.TODAYS_MEAL
+        binding.layoutContent.recyclerViewAvailableFoods.visibility = View.GONE
+        binding.layoutContent.labelPacks.text = Constants.AVAILABLE_PACKS
         // Packs adapter
-        packsAdapter = AvailablePacksAdapter { pack -> packOnClick(pack) }
+        packsAdapter = AvailablePacksAdapter(
+            { pack -> packOnClick(pack) },
+            { newPackIds -> enrollButtonOnclick(newPackIds) }
+        )
         binding.layoutContent.recylerViewAvailablePacks.adapter = packsAdapter
         binding.layoutContent.recylerViewAvailablePacks.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        updateLists()
+        updateLists(packIds)
         // Foods adapter
         foodsAdapter = AvailableFoodsAdapter()
         binding.layoutContent.recyclerViewAvailableFoods.adapter = foodsAdapter
         binding.layoutContent.recyclerViewAvailableFoods.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    }
+
+    private fun checkUserPacksData() {
+
+        viewModel.userPacksId.observe(viewLifecycleOwner, Observer { packIds ->
+            fetchUserData()
+        })
+
     }
 
 }

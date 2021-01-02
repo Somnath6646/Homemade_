@@ -43,4 +43,8 @@ interface FirebaseSourceCallback {
     fun packDetailsFetchSuccessful(packs: ArrayList<FoodPack>)
     fun packFoodDetailsFetchSuccessful(foods: ArrayList<OrderServer>)
 
+    // Updating packs enrolled
+
+    fun packEnrolledDataChanged(newPackIds: ArrayList<Long>)
+
 }

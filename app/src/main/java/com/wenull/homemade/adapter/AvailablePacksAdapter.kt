@@ -3,6 +3,7 @@ package com.wenull.homemade.adapter
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -14,37 +15,38 @@ import com.wenull.homemade.databinding.ItemAvailablePacksBinding
 import com.wenull.homemade.utils.helper.Constants
 import com.wenull.homemade.utils.model.FoodPack
 
-class AvailablePacksAdapter(private val onClick: (FoodPack) -> Unit) : RecyclerView.Adapter<AvailablePacksViewHolder>() {
+class AvailablePacksAdapter(private val onClick: (FoodPack) -> Unit, private val enrollOnClick: (ArrayList<Long>) -> Unit) : RecyclerView.Adapter<AvailablePacksViewHolder>() {
 
     private val _packs = ArrayList<FoodPack>()
+    private val _userPacks = ArrayList<Long>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AvailablePacksViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = DataBindingUtil.inflate<ItemAvailablePacksBinding>(inflater, R.layout.item_available_packs, parent, false)
-        return AvailablePacksViewHolder(binding, onClick)
+        return AvailablePacksViewHolder(binding, onClick, enrollOnClick)
     }
 
     override fun getItemCount(): Int = _packs.size
 
     override fun onBindViewHolder(holder: AvailablePacksViewHolder, position: Int) {
-        holder.bind(_packs[position])
+        holder.bind(_packs[position], _userPacks)
     }
 
-    fun setList(packs: ArrayList<FoodPack>) {
+    fun setList(packs: ArrayList<FoodPack>, packIds: ArrayList<Long>) {
         _packs.clear()
         _packs.addAll(packs)
+        _userPacks.clear()
+        _userPacks.addAll(packIds)
         notifyDataSetChanged()
     }
 }
 
-class AvailablePacksViewHolder(private val binding: ItemAvailablePacksBinding, private val onClick: (FoodPack) -> Unit) : RecyclerView.ViewHolder(binding.root) {
+class AvailablePacksViewHolder(private val binding: ItemAvailablePacksBinding, private val onClick: (FoodPack) -> Unit, private val enrollOnClick: (ArrayList<Long>) -> Unit) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(pack: FoodPack) {
+    fun bind(pack: FoodPack, packIds: ArrayList<Long>) {
 
         val imageReference =
             Firebase.storage.reference.child("${Constants.COLLECTION_FOOD_PACK}/${pack.imageName}")
-
-        var imageUrl: Uri? = null
 
         imageReference.downloadUrl
             .addOnSuccessListener { uri ->
@@ -59,6 +61,23 @@ class AvailablePacksViewHolder(private val binding: ItemAvailablePacksBinding, p
                 Log.i("Exception", "DownloadURL")
                 exception.printStackTrace()
             }
+
+        if(!packIds.contains(pack.id)) {
+            binding.enrollButton.text = Constants.ENROLL_NOW
+            binding.enrollButton.setOnClickListener {
+                val newPackIds = packIds
+                newPackIds.add(pack.id)
+                enrollOnClick(newPackIds)
+            }
+        } else {
+            binding.enrollButton.text = Constants.ENROLLED
+            binding.enrollButton.setCompoundDrawables(null, null, null, null)
+            binding.enrollButton.setOnClickListener {
+                val newPackIds = packIds
+                newPackIds.remove(pack.id)
+                enrollOnClick(newPackIds)
+            }
+        }
 
         binding.packName.text = pack.name
         binding.packShortDescription.text = pack.description

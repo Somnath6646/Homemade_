@@ -348,4 +348,20 @@ class FirebaseSource(private val activity: Activity) {
 
     }
 
+    fun enrollOrUnenroll(uid: String, newPackIds: ArrayList<Long>) {
+
+        firestore.collection(Constants.COLLECTION_USERS)
+            .document(uid)
+            .update(Constants.FIELD_PACKS_ENROLLED, newPackIds)
+            .addOnCompleteListener { task ->
+                if(task.isSuccessful) {
+                    firebaseSourceCallback.packEnrolledDataChanged(newPackIds)
+                } else {
+                    Log.i("ExceptionEnroll", "In updating enroll data")
+                    task.exception?.printStackTrace()
+                }
+            }
+
+    }
+
 }

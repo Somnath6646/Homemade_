@@ -193,6 +193,15 @@ class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel()
         repository.fetchTodayFoodDetails(day, packId)
     }
 
+    // Updating packs enrolled data
+
+    val userPacksId: LiveData<ArrayList<Long>>
+        get() = repository.userPacksEnrolledLiveData
+
+    fun enrollOrUnenroll(uid: String, newPackIds: ArrayList<Long>) {
+        repository.enrollOrUnenroll(uid, newPackIds)
+    }
+
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {}
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {}
 

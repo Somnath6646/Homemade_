@@ -15,8 +15,8 @@ class Constants {
         const val SENDING_OTP = "Sending OTP..."
         const val ENTER_OTP = "Enter the OTP sent to your no."
         const val ENTER_ALL_CREDENTIALS = "Please fill all the details"
-        const val YOUR_FOODS = "Your Foods"
-        const val YOUR_PACKS = "Your Packs"
+        const val TODAYS_MEAL = "Today's Meal"
+        const val ALL_PACKS = "All Packs"
         const val AVAILABLE_FOODS = "Available Foods"
         const val AVAILABLE_PACKS = "Available Packs"
 
@@ -26,7 +26,8 @@ class Constants {
         const val FRAGMENT_PACK_ID = "packId"
         const val USER_DATA_EXISTS = true
         const val USER_DATA_DOES_NOT_EXIST = false
-
+        const val ENROLLED = "Enrolled"
+        const val ENROLL_NOW = "Enroll now"
 
         // Firebase reference values
         const val COLLECTION_USERS = "users"

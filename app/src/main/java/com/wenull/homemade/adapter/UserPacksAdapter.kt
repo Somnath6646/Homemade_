@@ -37,10 +37,12 @@ class UserPacksAdapter(private val optOutMenuClickListener: (FoodPack, View) -> 
         _packs.addAll(packs)
         notifyDataSetChanged()
     }
+
 }
 
-class UserPacksViewHolder(private val binding: ItemUserOwnedPacksBinding, private val optOutMenuClickListener: (FoodPack, View) -> Unit): RecyclerView.ViewHolder(binding.root){
-    fun bind(pack: FoodPack){
+class UserPacksViewHolder(private val binding: ItemUserOwnedPacksBinding, private val optOutMenuClickListener: (FoodPack, View) -> Unit): RecyclerView.ViewHolder(binding.root) {
+
+    fun bind(pack: FoodPack) {
 
         val imageReference =
             Firebase.storage.reference.child("${Constants.COLLECTION_FOOD_PACK}/${pack.imageName}")
@@ -53,7 +55,10 @@ class UserPacksViewHolder(private val binding: ItemUserOwnedPacksBinding, privat
                 Picasso.get()
                     .load(uri)
                     .centerCrop()
-                    .resize(binding.packThumbnailContainer.width, binding.packThumbnailContainer.height)
+                    .resize(
+                        binding.packThumbnailContainer.width,
+                        binding.packThumbnailContainer.height
+                    )
                     .into(binding.packThumbnail)
             }
             .addOnFailureListener { exception ->
@@ -67,5 +72,7 @@ class UserPacksViewHolder(private val binding: ItemUserOwnedPacksBinding, privat
         binding.optoutMenuBtn.setOnClickListener {
             optOutMenuClickListener(pack, binding.itemPackContainer)
         }
+
     }
+
 }
