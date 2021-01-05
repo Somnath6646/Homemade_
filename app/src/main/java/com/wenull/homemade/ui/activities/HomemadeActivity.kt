@@ -10,11 +10,18 @@ import com.wenull.homemade.databinding.ActivityHomemadeBinding
 import com.wenull.homemade.repositories.HomemadeRepository
 import com.wenull.homemade.ui.viewmodel.HomemadeViewModel
 import com.wenull.homemade.ui.viewmodel.HomemadeViewModelFactory
+import com.wenull.homemade.utils.helper.FragmentActions
 
 class HomemadeActivity : AppCompatActivity() {
 
     private lateinit var viewModel: HomemadeViewModel
     private lateinit var binding: ActivityHomemadeBinding
+
+    private lateinit var fragmentAction: FragmentActions
+
+    fun setAction(fragmentActions: FragmentActions){
+        this.fragmentAction = fragmentActions
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +35,14 @@ class HomemadeActivity : AppCompatActivity() {
 
 
 
+    }
+
+    override fun onBackPressed() {
+        if(fragmentAction.getDrawerState() == 0.0f){
+            super.onBackPressed()
+        }else {
+            fragmentAction.onBackPressed()
+        }
     }
 
 }

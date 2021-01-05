@@ -4,7 +4,26 @@
     <Transition
         app:constraintSetEnd="@layout/fragment_home_end_scene"
         app:constraintSetStart="@layout/fragment_home" >
+
         <OnClick app:targetId="@+id/nav_icon"
-            app:clickAction="toggle"/>
+
+            app:clickAction="transitionToEnd"/>
+
+
     </Transition>
+
+    <Transition
+        app:constraintSetEnd="@layout/fragment_home_end_scene"
+        app:constraintSetStart="@layout/fragment_home" >
+
+        <OnClick app:targetId="@+id/nav_icon"
+
+            app:clickAction="transitionToStart"/>
+
+
+    </Transition>
+
+
+
+
 </MotionScene>

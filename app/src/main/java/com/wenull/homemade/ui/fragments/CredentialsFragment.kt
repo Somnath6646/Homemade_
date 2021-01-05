@@ -79,6 +79,8 @@ class CredentialsFragment : BaseFragment<FragmentCredentialsBinding, HomemadeVie
             }
         })
 
+
+
         binding.profilePicCardView.setOnClickListener {
             openGallery()
         }

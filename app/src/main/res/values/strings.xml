@@ -25,4 +25,5 @@
     <string name="available_foods">Available foods</string>
     <string name="label_fragment_pack_contents">Pack Contents</string>
     <string name="label_your_packs">Your packs</string>
+    <string name="label_fragment_skipped_orders">Skipped Orders</string>
 </resources>
