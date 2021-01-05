@@ -8,6 +8,7 @@ import androidx.databinding.Observable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.wenull.homemade.utils.helper.Constants
 import com.wenull.homemade.repositories.HomemadeRepository
@@ -16,6 +17,7 @@ import com.wenull.homemade.utils.model.FoodPack
 import com.wenull.homemade.utils.model.OrderServer
 import com.wenull.homemade.utils.model.User
 import com.wenull.homemade.utils.model.UserAddress
+import kotlinx.coroutines.launch
 
 class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel(), Observable {
 
@@ -105,7 +107,7 @@ class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel()
 
         if(fileUri != null) {
 
-            Log.i("FileURI", "${fileUri.toString()}")
+            Log.i("FileURI", fileUri.toString())
 
             if((firstName.value != null && !firstName.value.isNullOrEmpty()) &&
                 (lastName.value != null && !lastName.value.isNullOrEmpty()) &&
@@ -132,7 +134,7 @@ class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel()
                     lastName = lastName.value!!,
                     address = address,
                     packsEnrolled = ArrayList<Long>(),
-                    imageName = "${FirebaseAuth.getInstance().currentUser!!.uid}"
+                    imageName = FirebaseAuth.getInstance().currentUser!!.uid
                 )
 
                 repository.addUserCredentials(user, fileUri!!)
@@ -144,6 +146,15 @@ class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel()
         } else {
             repository.eventIndicator.value = Event(Constants.ENTER_ALL_CREDENTIALS)
         }
+    }
+
+    // Checking if user data already exists
+
+    val userExists: LiveData<Event<Boolean>>
+        get() = repository.userExists
+
+    fun checkIfUserExists(uid: String) {
+        repository.checkIfUserExists(uid)
     }
 
     // Getting packs details from the user starts
@@ -160,6 +171,35 @@ class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel()
 
     fun fetchPackFoodDetails(packId: Long) {
         repository.fetchPackFoodDetails(packId)
+    }
+
+    // Getting packs details from the user starts ends
+
+    // Getting user data
+
+    val userData: LiveData<Event<User>>
+        get() = repository.userData
+
+    fun fetchUserData(uid: String) {
+        repository.fetchUserData(uid)
+    }
+
+    // Getting today's food details
+
+    val todayFood: LiveData<OrderServer>
+        get() = repository.todayFoodLiveData
+
+    fun fetchTodayFoodDetails(day: String, packId: Long) {
+        repository.fetchTodayFoodDetails(day, packId)
+    }
+
+    // Updating packs enrolled data
+
+    val userPacksId: LiveData<ArrayList<Long>>
+        get() = repository.userPacksEnrolledLiveData
+
+    fun enrollOrUnenroll(uid: String, newPackIds: ArrayList<Long>) {
+        repository.enrollOrUnenroll(uid, newPackIds)
     }
 
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {}

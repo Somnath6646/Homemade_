@@ -27,6 +27,13 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
 
     val packsLiveData: MutableLiveData<ArrayList<FoodPack>> = MutableLiveData()
     val packFoodsLiveData: MutableLiveData<ArrayList<OrderServer>> = MutableLiveData()
+    val todayFoodLiveData: MutableLiveData<OrderServer> = MutableLiveData()
+
+    val userExists: MutableLiveData<Event<Boolean>> = MutableLiveData()
+
+    val userData: MutableLiveData<Event<User>> = MutableLiveData()
+
+    val userPacksEnrolledLiveData: MutableLiveData<ArrayList<Long>> = MutableLiveData()
 
     private var haveCredentialsBeenUploaded = false
     private var hasImageBeenUploaded = false
@@ -83,13 +90,29 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
             credentialsAndImageState.value = Event(Constants.SUCCESSFUL)
         }
 
+        override fun checkIfUserExists(exists: Boolean) {
+            userExists.value = Event(exists)
+        }
+
+        override fun fetchUserData(user: User) {
+            userData.value = Event(user)
+        }
+
+        override fun fetchTodayFoodDetails(food: OrderServer) {
+            todayFoodLiveData.value = food
+        }
+
         override fun packDetailsFetchSuccessful(packs: ArrayList<FoodPack>) {
             packsLiveData.value = packs
         }
 
         override fun packFoodDetailsFetchSuccessful(foods: ArrayList<OrderServer>) {
             packFoodsLiveData.value = foods
-            Log.i("Foods", "$foods")
+            Log.i("Foods in repo", "$foods")
+        }
+
+        override fun packEnrolledDataChanged(newPackIds: ArrayList<Long>) {
+            userPacksEnrolledLiveData.value = newPackIds
         }
 
     }
@@ -117,6 +140,22 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
 
     fun fetchPackFoodDetails(packId: Long) {
         firebaseSource.fetchPackFoodDetails(packId)
+    }
+
+    fun checkIfUserExists(uid: String) {
+        firebaseSource.checkIfUserExists(uid)
+    }
+
+    fun fetchUserData(uid: String) {
+        firebaseSource.fetchUserData(uid)
+    }
+
+    fun fetchTodayFoodDetails(day: String, packId: Long) {
+        firebaseSource.fetchTodayFoodDetails(day, packId)
+    }
+
+    fun enrollOrUnenroll(uid: String, newPackIds: ArrayList<Long>) {
+        firebaseSource.enrollOrUnenroll(uid, newPackIds)
     }
 
 }

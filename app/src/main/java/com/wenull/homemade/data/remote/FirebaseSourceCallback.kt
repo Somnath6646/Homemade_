@@ -5,6 +5,7 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.wenull.homemade.utils.model.FoodPack
 import com.wenull.homemade.utils.model.OrderServer
+import com.wenull.homemade.utils.model.User
 import java.lang.Exception
 
 interface FirebaseSourceCallback {
@@ -25,9 +26,25 @@ interface FirebaseSourceCallback {
     fun userImageUploadFailed(e: Exception)
     fun userCredentialsAndImageUploadSuccessful()
 
+    // Check if user data already exists
+
+    fun checkIfUserExists(exists: Boolean)
+
+    // Getting user details
+
+    fun fetchUserData(user: User)
+
+    // Getting today's food details
+
+    fun fetchTodayFoodDetails(food: OrderServer)
+
     // Getting pack details
 
     fun packDetailsFetchSuccessful(packs: ArrayList<FoodPack>)
     fun packFoodDetailsFetchSuccessful(foods: ArrayList<OrderServer>)
+
+    // Updating packs enrolled
+
+    fun packEnrolledDataChanged(newPackIds: ArrayList<Long>)
 
 }

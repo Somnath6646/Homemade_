@@ -3,10 +3,10 @@ package com.wenull.homemade.adapter
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
@@ -16,7 +16,7 @@ import com.wenull.homemade.utils.helper.Constants
 import com.wenull.homemade.utils.model.FoodPack
 
 
-class UserPacksAdapter(private val optOutMenuClickListener: (FoodPack) -> Unit) : RecyclerView.Adapter<UserPacksViewHolder>(){
+class UserPacksAdapter(private val optOutMenuClickListener: (FoodPack, View) -> Unit) : RecyclerView.Adapter<UserPacksViewHolder>(){
 
     private val _packs = ArrayList<FoodPack>()
 
@@ -37,13 +37,15 @@ class UserPacksAdapter(private val optOutMenuClickListener: (FoodPack) -> Unit) 
         _packs.addAll(packs)
         notifyDataSetChanged()
     }
+
 }
 
-class UserPacksViewHolder(private val binding: ItemUserOwnedPacksBinding, private val optOutMenuClickListener: (FoodPack) -> Unit): RecyclerView.ViewHolder(binding.root){
-    fun bind(pack: FoodPack){
+class UserPacksViewHolder(private val binding: ItemUserOwnedPacksBinding, private val optOutMenuClickListener: (FoodPack, View) -> Unit): RecyclerView.ViewHolder(binding.root) {
+
+    fun bind(pack: FoodPack) {
 
         val imageReference =
-            Firebase.storage.reference.child("${Constants.FOOD_PACK}/${pack.imageName}")
+            Firebase.storage.reference.child("${Constants.COLLECTION_FOOD_PACK}/${pack.imageName}")
 
         var imageUrl: Uri? = null
 
@@ -53,7 +55,10 @@ class UserPacksViewHolder(private val binding: ItemUserOwnedPacksBinding, privat
                 Picasso.get()
                     .load(uri)
                     .centerCrop()
-                    .resize(binding.packThumbnailContainer.width, binding.packThumbnailContainer.height)
+                    .resize(
+                        binding.packThumbnailContainer.width,
+                        binding.packThumbnailContainer.height
+                    )
                     .into(binding.packThumbnail)
             }
             .addOnFailureListener { exception ->
@@ -65,7 +70,9 @@ class UserPacksViewHolder(private val binding: ItemUserOwnedPacksBinding, privat
         binding.packShortDescription.text = pack.description
 
         binding.optoutMenuBtn.setOnClickListener {
-            optOutMenuClickListener(pack)
+            optOutMenuClickListener(pack, binding.itemPackContainer)
         }
+
     }
+
 }

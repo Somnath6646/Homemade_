@@ -9,14 +9,15 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.wenull.homemade.utils.helper.Constants
 import com.wenull.homemade.utils.model.FoodPack
 import com.wenull.homemade.utils.model.OrderServer
 import com.wenull.homemade.utils.model.User
+import com.wenull.homemade.utils.model.UserAddress
 import java.util.concurrent.TimeUnit
 
 class FirebaseSource(private val activity: Activity) {
@@ -25,8 +26,6 @@ class FirebaseSource(private val activity: Activity) {
     private lateinit var storedResendingToken: PhoneAuthProvider.ForceResendingToken
 
     private lateinit var firebaseSourceCallback: FirebaseSourceCallback
-
-    private val databaseReference = FirebaseDatabase.getInstance().reference
 
     private val firestore = FirebaseFirestore.getInstance()
 
@@ -135,10 +134,6 @@ class FirebaseSource(private val activity: Activity) {
 
         val storageReference = Firebase.storage.reference
 
-        /*val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
-        val data = baos.toByteArray()*/
-
         val uploadTask = storageReference.child("users/${user.imageName}").putFile(uri)
 
         uploadTask.addOnSuccessListener {
@@ -157,11 +152,80 @@ class FirebaseSource(private val activity: Activity) {
 
     // Adding user credentials to database ends
 
+    // Checking if user data already exists
+
+    fun checkIfUserExists(uid: String) {
+
+        firestore.collection(Constants.COLLECTION_USERS).document(uid).
+
+        firestore.collection(Constants.COLLECTION_USERS).document(uid)
+            .get()
+            .addOnCompleteListener {
+                if(it.isSuccessful) {
+
+                    val data = it.result?.data
+                    Log.i("User Data", "${data}")
+                    if (data != null)
+                        firebaseSourceCallback.checkIfUserExists(Constants.USER_DATA_EXISTS)
+                    else
+                        firebaseSourceCallback.checkIfUserExists(Constants.USER_DATA_DOES_NOT_EXIST)
+
+                } else {
+                    firebaseSourceCallback.checkIfUserExists(Constants.USER_DATA_DOES_NOT_EXIST)
+                    Log.i("Exception", "User data check exist")
+                    it.exception?.printStackTrace()
+                }
+            }
+
+    }
+
+    // Fetching user details
+
+    fun fetchUserData(uid: String) {
+
+        firestore.collection(Constants.COLLECTION_USERS).document(uid)
+            .get()
+            .addOnCompleteListener { task ->
+                if(task.isSuccessful) {
+
+                    val data = task.result?.data
+
+                    if(data != null) {
+
+                        val addressRef = data[Constants.FIELD_ADDRESS] as Map<*, *>
+
+                        val address = UserAddress(
+                            buildingNameOrNumber = addressRef[Constants.FIELD_BUILDING_NAME_OR_NUMBER] as String,
+                            streetName = addressRef[Constants.FIELD_STREET_NAME] as String,
+                            locality = addressRef[Constants.FIELD_LOCALITY] as String,
+                            city = addressRef[Constants.FIELD_CITY] as String,
+                            pincode = addressRef[Constants.FIELD_PINCODE] as String
+                        )
+
+                        val user = User(
+                            uid = data[Constants.FIELD_UID] as String,
+                            phoneNumber = data[Constants.FIELD_PHONE_NUMBER] as String,
+                            firstName = data[Constants.FIELD_FIRST_NAME] as String,
+                            lastName = data[Constants.FIELD_LAST_NAME] as String,
+                            address = address,
+                            packsEnrolled = data[Constants.FIELD_PACKS_ENROLLED] as ArrayList<Long>,
+                            imageName = data[Constants.FIELD_IMAGE_NAME] as String
+                        )
+
+                        firebaseSourceCallback.fetchUserData(user)
+
+                    }
+
+                }
+            }
+
+    }
+
     // Fetching packs data starts
 
     fun fetchPackDetails() {
 
-        firestore.collection(Constants.FOOD_PACK).get()
+        firestore.collection(Constants.COLLECTION_FOOD_PACK).get()
             .addOnSuccessListener { data ->
 
                 if(!data.isEmpty) {
@@ -192,10 +256,65 @@ class FirebaseSource(private val activity: Activity) {
 
     }
 
+    // Fetching today's food details
+
+    fun fetchTodayFoodDetails(day: String, packId: Long) {
+
+        firestore.collection(Constants.COLLECTION_FOOD_PACK)
+            .document(packId.toString())
+            .collection(Constants.COLLECTIONS_FOODS)
+            .whereEqualTo(Constants.FIELD_DAY, day)
+            .whereEqualTo(Constants.FIELD_PACK_ID, packId)
+            .get()
+            .addOnCompleteListener { task ->
+
+                if(task.isSuccessful) {
+
+                    val documents = task.result?.documents
+
+                    if(documents != null) {
+
+                        if(documents.size > 0) {
+
+                            val document = documents[0]
+
+                            Log.i("TodayFood", "${documents[0]}")
+
+                            val food = OrderServer(
+                                id = document!![Constants.FIELD_ID] as Long,
+                                name = document[Constants.FIELD_NAME] as String,
+                                description = document[Constants.FIELD_DESCRIPTION] as String,
+                                price = document[Constants.FIELD_PRICE] as String,
+                                day = document[Constants.FIELD_DAY] as String,
+                                imageName = document[Constants.FIELD_IMAGE_NAME] as String,
+                                packId = document[Constants.FIELD_PACK_ID] as Long
+                            )
+
+                            Log.i("TodayFood", "${food}")
+
+                            firebaseSourceCallback.fetchTodayFoodDetails(food)
+
+                        }
+
+                    } else {
+                        Log.i("TodayFoodGet", "Doc is null")
+                    }
+
+                } else {
+                    Log.i("TodayFoodGet", "Failed")
+                    task.exception?.printStackTrace()
+                }
+
+            }
+
+    }
+
     fun fetchPackFoodDetails(packId: Long) {
 
-        firestore.collection(Constants.FOOD_PACK).document(packId.toString())
-            .collection(Constants.FOODS).get()
+        Log.i("PackId firebaseSource", "$packId")
+
+        firestore.collection(Constants.COLLECTION_FOOD_PACK).document(packId.toString())
+            .collection(Constants.COLLECTIONS_FOODS).get()
             .addOnSuccessListener { snapshot ->
 
                 val documents = snapshot.documents
@@ -206,12 +325,12 @@ class FirebaseSource(private val activity: Activity) {
 
                     val food = OrderServer(
                         id = document!![Constants.FIELD_ID] as Long,
-                        name = document!![Constants.FIELD_NAME] as String,
-                        description = document!![Constants.FIELD_DESCRIPTION] as String,
-                        price = document!![Constants.FIELD_PRICE] as String,
-                        day = document!![Constants.FIELD_DAY] as String,
-                        imageName = document!![Constants.FIELD_IMAGE_NAME] as String,
-                        packId = document!![Constants.FIELD_PACK_ID] as Long
+                        name = document[Constants.FIELD_NAME] as String,
+                        description = document[Constants.FIELD_DESCRIPTION] as String,
+                        price = document[Constants.FIELD_PRICE] as String,
+                        day = document[Constants.FIELD_DAY] as String,
+                        imageName = document[Constants.FIELD_IMAGE_NAME] as String,
+                        packId = document[Constants.FIELD_PACK_ID] as Long
                     )
 
                     Log.i("Food", "$food")
@@ -224,7 +343,23 @@ class FirebaseSource(private val activity: Activity) {
 
             }.addOnFailureListener {
                 Log.i("Exception", "In fetching food details")
-                    it.printStackTrace()
+                it.printStackTrace()
+            }
+
+    }
+
+    fun enrollOrUnenroll(uid: String, newPackIds: ArrayList<Long>) {
+
+        firestore.collection(Constants.COLLECTION_USERS)
+            .document(uid)
+            .update(Constants.FIELD_PACKS_ENROLLED, newPackIds)
+            .addOnCompleteListener { task ->
+                if(task.isSuccessful) {
+                    firebaseSourceCallback.packEnrolledDataChanged(newPackIds)
+                } else {
+                    Log.i("ExceptionEnroll", "In updating enroll data")
+                    task.exception?.printStackTrace()
+                }
             }
 
     }
