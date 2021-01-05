@@ -7,7 +7,7 @@
     <string name="hint_otp">OTP</string>
     <string name="hint_first_name">First name</string>
     <string name="hint_last_name">Last Name</string>
-    <string name="adress_label_credentialsfrag">Adress</string>
+    <string name="address_label_credentialsfrag">Address</string>
     <string name="hint_street_name">Street name</string>
     <string name="hint_building_name">Building Name</string>
     <string name="hint_locality">Locality</string>
@@ -26,4 +26,7 @@
     <string name="label_fragment_pack_contents">Pack Contents</string>
     <string name="label_your_packs">Your packs</string>
     <string name="label_fragment_skipped_orders">Skipped Orders</string>
+    <string name="opt_out_meal_message">Choose day to opt out from a meal</string>
+    <string name="cancel">Cancel</string>
+    <string name="done">Done</string>
 </resources>

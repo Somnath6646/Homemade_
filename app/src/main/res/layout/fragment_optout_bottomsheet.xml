@@ -1,64 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-<androidx.cardview.widget.CardView
-    android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="@dimen/margin_25dp"
-    android:layout_height="wrap_content">
 
-    <LinearLayout
+    <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/optoutbottomsheet_heading"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Choose days to optout"
-            android:fontFamily="@font/sf_pro_rounded_semibold"
-            android:textSize="21sp"
-            android:padding="@dimen/padding_15dp"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            />
-        <CalendarView
-            android:id="@+id/optoutbottomsheet_calender_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/margin_25dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/margin_8dp"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="@dimen/text_size_18sp"
-                android:text="Cancel"
-                android:padding="@dimen/padding_7dp"
-                android:textColor="@color/black"
-                android:fontFamily="@font/sf_pro_rounded_semibold"
-                android:textAlignment="center"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="@dimen/text_size_18sp"
-                android:text="Done"
-                android:padding="@dimen/padding_7dp"
-                android:textColor="@color/colorPrimary"
-                android:fontFamily="@font/sf_pro_rounded_semibold"
-                android:textAlignment="center"
-                />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/optoutbottomsheet_heading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sf_pro_rounded_semibold"
+                android:padding="@dimen/padding_15dp"
+                android:text="@string/opt_out_meal_message"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="21sp" />
+
+            <CalendarView
+                android:id="@+id/calender_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/margin_8dp">
+
+                <TextView
+                    android:id="@+id/cancel_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="@font/sf_pro_rounded_semibold"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:padding="@dimen/padding_7dp"
+                    android:text="@string/cancel"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_18sp" />
+
+                <TextView
+                    android:id="@+id/done_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="@font/sf_pro_rounded_semibold"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:padding="@dimen/padding_7dp"
+                    android:text="@string/done"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_18sp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-</androidx.cardview.widget.CardView>
 </layout>

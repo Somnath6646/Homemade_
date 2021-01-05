@@ -3,14 +3,18 @@ package com.wenull.homemade.ui.fragments
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import com.wenull.homemade.R
 import com.wenull.homemade.adapter.AvailableFoodsAdapter
 import com.wenull.homemade.adapter.AvailablePacksAdapter
@@ -18,8 +22,14 @@ import com.wenull.homemade.databinding.FragmentHomeBinding
 import com.wenull.homemade.ui.activities.HomemadeActivity
 import com.wenull.homemade.ui.fragments.base.BaseFragment
 import com.wenull.homemade.ui.viewmodel.HomemadeViewModel
+import com.wenull.homemade.utils.helper.Constants
 import com.wenull.homemade.utils.helper.FragmentActions
 import com.wenull.homemade.utils.model.FoodPack
+import com.wenull.homemade.utils.model.OrderServer
+import com.wenull.homemade.utils.model.User
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>(), FragmentActions{
@@ -27,6 +37,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>(), Fra
 
     private lateinit var packsAdapter: AvailablePacksAdapter
     private lateinit var foodsAdapter: AvailableFoodsAdapter
+
+    private val auth = FirebaseAuth.getInstance()
+
+    private lateinit var user: User
 
     override fun getLayout(): Int = R.layout.fragment_home
 
@@ -60,24 +74,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>(), Fra
             findNavController().navigate(action)
         }
 
+        checkUserPacksData()
+
+        fetchUserData()
 
         defineLayout()
 
-
-
     }
 
+    private fun defineLayout() {
 
-    private fun defineLayout(){
-        setUpRecyclerView()
-
-        /*binding.layoutContent.navIcon.setOnClickListener {
-            if (binding.layoutContent.homeFragmentContainer.radius == 15f) {
-                binding.layoutContent.homeFragmentContainer.radius = 0f
-            } else {
-                binding.layoutContent.homeFragmentContainer.radius = 15f
-            }
-        }*/
             binding.motionLayout.addTransitionListener(object : MotionLayout.TransitionListener{
                 override fun onTransitionTrigger(
                     p0: MotionLayout?,
@@ -96,7 +102,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>(), Fra
                         setWindowColor(R.color.dull_white)
                     } else {
                         binding.layoutContent.homeFragmentContainer.radius = 20f
-                        setWindowColor(R.color.colorPrimary)
                     }
                 }
 
@@ -106,56 +111,114 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>(), Fra
 
                 override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {
                     Log.i("Transition", "ended")
-
-
-
                 }
             })
 
-
-
     }
 
-
-
-
-
-    private fun updateLists() {
+    private fun updateLists(packIds: ArrayList<Long>) {
         viewModel.fetchPackDetails()
         viewModel.packs.observe(viewLifecycleOwner, Observer { packs ->
-            packsAdapter.setList(packs)
+            packsAdapter.setList(packs, packIds)
         })
         viewModel.packFoods.observe(viewLifecycleOwner, Observer { packFoods ->
             foodsAdapter.setList(packFoods)
         })
     }
 
-    fun packOnClick(pack: FoodPack) {
+    private fun fetchUserData() {
 
-        if(getDrawerState() != 0.0f) onBackPressed()
+        viewModel.fetchUserData(auth.currentUser!!.uid)
 
-        updateFoods(pack.id)
+        viewModel.userData.observe(viewLifecycleOwner, Observer { event ->
 
-        //navigating to its content
-        val action = HomeFragmentDirections.actionHomeFragmentToPackContentFragment()
-        findNavController().navigate(action)
+            event?.getContentIfNotHandled()?.let { user ->
+
+                this.user = user
+
+                val packs = user.packsEnrolled
+
+                Log.i("Packs", "$packs")
+
+                if(packs.size > 0) {
+                    setUserPackAndFoodRecyclerView(packs)
+                } else {
+                    setUpRecyclerView(ArrayList())
+                }
+
+            }
+
+        })
 
     }
 
-    private fun updateFoods(packId: Long) {
-        viewModel.fetchPackFoodDetails(packId)
-    }
+    private fun setUserPackAndFoodRecyclerView(packIds: ArrayList<Long>) {
 
-    private fun setUpRecyclerView() {
-        // Packs adapter
-        packsAdapter = AvailablePacksAdapter { pack -> packOnClick(pack) }
+        binding.layoutContent.labelFoods.visibility = View.VISIBLE
+        binding.layoutContent.labelFoods.text = Constants.TODAYS_MEAL
+        binding.layoutContent.recyclerViewAvailableFoods.visibility = View.VISIBLE
+        binding.layoutContent.labelPacks.text = Constants.ALL_PACKS
+
+        packsAdapter = AvailablePacksAdapter(
+            { pack -> packOnClick(pack) },
+            { newPackIds -> enrollButtonOnclick(newPackIds) }
+        )
         binding.layoutContent.recylerViewAvailablePacks.adapter = packsAdapter
         binding.layoutContent.recylerViewAvailablePacks.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        updateLists()
+        updateLists(packIds)
         // Foods adapter
         foodsAdapter = AvailableFoodsAdapter()
         binding.layoutContent.recyclerViewAvailableFoods.adapter = foodsAdapter
         binding.layoutContent.recyclerViewAvailableFoods.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        updateFoods(packIds[0])
+
+    }
+
+    private fun packOnClick(pack: FoodPack) {
+        //navigating to its content
+        val action = HomeFragmentDirections.actionHomeFragmentToPackContentFragment()
+        val bundle = bundleOf(Constants.FRAGMENT_PACK_ID to pack.id)
+        findNavController().navigate(action.actionId, bundle)
+    }
+
+    private fun enrollButtonOnclick(newPackIds: ArrayList<Long>) {
+        viewModel.enrollOrUnenroll(auth.currentUser!!.uid, newPackIds)
+    }
+
+    private fun updateFoods(packId: Long) {
+        val day = SimpleDateFormat(Constants.DAY_OF_WEEK, Locale.ENGLISH).format(System.currentTimeMillis())
+        Log.i("Day of week", day)
+        viewModel.fetchTodayFoodDetails(day, packId)
+        viewModel.todayFood.observe(viewLifecycleOwner, Observer { food ->
+            foodsAdapter.setList(mutableListOf(food) as ArrayList<OrderServer>)
+        })
+    }
+
+    private fun setUpRecyclerView(packIds: ArrayList<Long>) {
+        binding.layoutContent.labelFoods.visibility = View.GONE
+        binding.layoutContent.labelFoods.text = Constants.TODAYS_MEAL
+        binding.layoutContent.recyclerViewAvailableFoods.visibility = View.GONE
+        binding.layoutContent.labelPacks.text = Constants.AVAILABLE_PACKS
+        // Packs adapter
+        packsAdapter = AvailablePacksAdapter(
+            { pack -> packOnClick(pack) },
+            { newPackIds -> enrollButtonOnclick(newPackIds) }
+        )
+        binding.layoutContent.recylerViewAvailablePacks.adapter = packsAdapter
+        binding.layoutContent.recylerViewAvailablePacks.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        updateLists(packIds)
+        // Foods adapter
+        foodsAdapter = AvailableFoodsAdapter()
+        binding.layoutContent.recyclerViewAvailableFoods.adapter = foodsAdapter
+        binding.layoutContent.recyclerViewAvailableFoods.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    }
+
+    private fun checkUserPacksData() {
+
+        viewModel.userPacksId.observe(viewLifecycleOwner, Observer { packIds ->
+            fetchUserData()
+        })
+
     }
 
     private fun setWindowColor(colorId: Int){

@@ -240,7 +240,8 @@ class FirebaseSource(private val activity: Activity) {
                             id = document.data!![Constants.FIELD_ID] as Long,
                             name = document.data!![Constants.FIELD_NAME] as String,
                             description = document.data!![Constants.FIELD_DESCRIPTION]  as String,
-                            imageName = document.data!![Constants.FIELD_IMAGE_NAME]  as String
+                            imageName = document.data!![Constants.FIELD_IMAGE_NAME]  as String,
+                            skipTimeLimit = document.data!![Constants.FIELD_SKIP_TME_LIMIT] as Long
                         )
 
                         packs.add(pack)
@@ -363,5 +364,7 @@ class FirebaseSource(private val activity: Activity) {
             }
 
     }
+
+    // Managing skipping orders
 
 }

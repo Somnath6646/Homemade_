@@ -29,6 +29,15 @@
             app:popExitAnim="@anim/out_to_right"
             app:popUpTo="@id/nav_app"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_splashFragment_to_credentialsFragment"
+            app:destination="@id/credentialsFragment"
+            app:enterAnim="@anim/in_from_right"
+            app:exitAnim="@anim/out_to_left"
+            app:popEnterAnim="@anim/in_from_left"
+            app:popExitAnim="@anim/out_to_right"
+            app:popUpTo="@id/credentialsFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/signupLoginFragment"
@@ -106,8 +115,14 @@
         tools:layout="@layout/fragment_profile"/>
     <dialog
         android:id="@+id/optoutBottomsheetFragment"
-        android:name="com.wenull.homemade.ui.fragments.OptoutBottomsheetFragment"
-        android:label="OptoutBottomsheetFragment" />
+        android:name="com.wenull.homemade.ui.fragments.OptoutBottomSheetFragment"
+        android:label="OptoutBottomsheetFragment">
+
+        <argument
+            android:name="pack"
+            app:argType="com.wenull.homemade.utils.model.FoodPack" />
+
+    </dialog>
     <fragment
         android:id="@+id/skippedOrdersFragment"
         android:name="com.wenull.homemade.ui.fragments.SkippedOrdersFragment"

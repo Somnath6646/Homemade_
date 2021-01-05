@@ -33,7 +33,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/label_available_foods"
+                    android:id="@+id/label_foods"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_25dp"
@@ -43,17 +43,19 @@
                     android:textColor="@color/black"
                     android:textSize="34sp"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/nav_icon" />
+                    app:layout_constraintTop_toBottomOf="@id/nav_icon"
+                    android:visibility="gone" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView_available_foods"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/label_available_foods" />
+                    app:layout_constraintTop_toBottomOf="@id/label_foods"
+                    android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/label_available_packs"
+                    android:id="@+id/label_packs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_25dp"
@@ -70,8 +72,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/label_available_packs" />
-
+                    app:layout_constraintTop_toBottomOf="@id/label_packs" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

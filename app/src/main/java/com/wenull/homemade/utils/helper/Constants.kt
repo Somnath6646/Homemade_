@@ -43,6 +43,7 @@ class Constants {
         const val FIELD_PRICE = "price"
         const val FIELD_PACK_ID = "packId"
         const val FIELD_UID = "uid"
+        const val FIELD_SKIP_TME_LIMIT = "skipTimeLimit"
         const val FIELD_PHONE_NUMBER = "phoneNumber"
         const val FIELD_FIRST_NAME = "firstName"
         const val FIELD_LAST_NAME = "lastName"
@@ -56,6 +57,12 @@ class Constants {
 
         // Formats
         const val DAY_OF_WEEK = "EEEE"
+
+        // Day value
+        const val ONE_DAY_IN_MILLIS = 86400000L
+
+        // Fragment constants
+        const val BUNDLE_FOOD_PACK = "pack"
 
     }
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.MenuInflater
 import android.view.View
 import android.widget.PopupMenu
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +13,7 @@ import com.wenull.homemade.adapter.UserPacksAdapter
 import com.wenull.homemade.databinding.FragmentProfileBinding
 import com.wenull.homemade.ui.viewmodel.HomemadeViewModel
 import com.wenull.homemade.ui.fragments.base.BaseFragment
+import com.wenull.homemade.utils.helper.Constants
 import com.wenull.homemade.utils.model.FoodPack
 
 
@@ -53,6 +55,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, HomemadeViewModel>(
     }
 
     private fun onOptOutMenuClick(pack: FoodPack, view: View) {
+
         val popup = PopupMenu(requireContext(), view)
         val menuInflater = MenuInflater(requireContext())
 
@@ -68,8 +71,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, HomemadeViewModel>(
                 }
 
                 R.id.selective_optout -> {
-                    val action =
-                        ProfileFragmentDirections.actionProfileFragmentToOptoutBottomsheetFragment()
+                    val action = ProfileFragmentDirections.actionProfileFragmentToOptoutBottomsheetFragment(pack)
                     findNavController().navigate(action)
                     return@setOnMenuItemClickListener true
                 }
