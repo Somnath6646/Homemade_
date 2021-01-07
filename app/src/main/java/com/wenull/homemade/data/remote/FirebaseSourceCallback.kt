@@ -3,9 +3,7 @@ package com.wenull.homemade.data.remote
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
-import com.wenull.homemade.utils.model.FoodPack
-import com.wenull.homemade.utils.model.OrderServer
-import com.wenull.homemade.utils.model.User
+import com.wenull.homemade.utils.model.*
 import java.lang.Exception
 
 interface FirebaseSourceCallback {
@@ -46,5 +44,9 @@ interface FirebaseSourceCallback {
     // Updating packs enrolled
 
     fun packEnrolledDataChanged(newPackIds: ArrayList<Long>)
+
+    // Getting user skipped meal data
+
+    fun userSkippedMealDataFetchSuccessful(userSkippedData: UserSkippedData)
 
 }

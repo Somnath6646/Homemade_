@@ -4,22 +4,26 @@ import android.os.Bundle
 import android.view.MenuInflater
 import android.view.View
 import android.widget.PopupMenu
-import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import com.wenull.homemade.R
 import com.wenull.homemade.adapter.UserPacksAdapter
 import com.wenull.homemade.databinding.FragmentProfileBinding
 import com.wenull.homemade.ui.viewmodel.HomemadeViewModel
 import com.wenull.homemade.ui.fragments.base.BaseFragment
-import com.wenull.homemade.utils.helper.Constants
 import com.wenull.homemade.utils.model.FoodPack
+import com.wenull.homemade.utils.model.UserSkippedData
 
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding, HomemadeViewModel>() {
 
     private lateinit var adapter: UserPacksAdapter
+
+    private val auth = FirebaseAuth.getInstance()
+
+    var userSkippedData: UserSkippedData? = null
 
     override fun getLayout(): Int = R.layout.fragment_profile
 
@@ -32,9 +36,19 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, HomemadeViewModel>(
         viewModel.setFirebaseSourceCallback()
 
         setUpRecyclerView()
+        getUserSkippedData()
+
         binding.profileBackBtn.setOnClickListener {
             findNavController().popBackStack()
         }
+
+    }
+
+    private fun getUserSkippedData() {
+        viewModel.getUserSkippedData(auth.currentUser!!.uid)
+        viewModel.userSkippedData.observe(viewLifecycleOwner, Observer { data ->
+            userSkippedData = data
+        })
     }
 
     private fun setUpRecyclerView() {
@@ -71,7 +85,13 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, HomemadeViewModel>(
                 }
 
                 R.id.selective_optout -> {
-                    val action = ProfileFragmentDirections.actionProfileFragmentToOptoutBottomsheetFragment(pack)
+                    if(userSkippedData == null) {
+                        userSkippedData = UserSkippedData(
+                            uid = auth.currentUser!!.uid,
+                            skippedMeals = ArrayList()
+                        )
+                    }
+                    val action = ProfileFragmentDirections.actionProfileFragmentToOptoutBottomsheetFragment(pack, userSkippedData!!)
                     findNavController().navigate(action)
                     return@setOnMenuItemClickListener true
                 }

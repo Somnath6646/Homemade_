@@ -13,10 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.wenull.homemade.utils.helper.Constants
 import com.wenull.homemade.repositories.HomemadeRepository
 import com.wenull.homemade.utils.helper.Event
-import com.wenull.homemade.utils.model.FoodPack
-import com.wenull.homemade.utils.model.OrderServer
-import com.wenull.homemade.utils.model.User
-import com.wenull.homemade.utils.model.UserAddress
+import com.wenull.homemade.utils.model.*
 import kotlinx.coroutines.launch
 
 class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel(), Observable {
@@ -200,6 +197,21 @@ class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel()
 
     fun enrollOrUnenroll(uid: String, newPackIds: ArrayList<Long>) {
         repository.enrollOrUnenroll(uid, newPackIds)
+    }
+
+    // Getting user skipped meals data
+
+    val userSkippedData: LiveData<UserSkippedData>
+        get() = repository.userSkippedLiveData
+
+    fun getUserSkippedData(uid: String) {
+        repository.getUserSkippedData(uid)
+    }
+
+    // Skipping meal
+
+    fun skipAMeal(uid: String, userSkippedData: UserSkippedData) {
+        repository.skipAMeal(uid, userSkippedData)
     }
 
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {}

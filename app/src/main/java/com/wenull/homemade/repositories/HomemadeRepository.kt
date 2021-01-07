@@ -13,6 +13,7 @@ import com.wenull.homemade.utils.helper.Event
 import com.wenull.homemade.utils.model.FoodPack
 import com.wenull.homemade.utils.model.OrderServer
 import com.wenull.homemade.utils.model.User
+import com.wenull.homemade.utils.model.UserSkippedData
 import java.lang.Exception
 
 class HomemadeRepository(private val firebaseSource: FirebaseSource) {
@@ -34,6 +35,8 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
     val userData: MutableLiveData<Event<User>> = MutableLiveData()
 
     val userPacksEnrolledLiveData: MutableLiveData<ArrayList<Long>> = MutableLiveData()
+
+    val userSkippedLiveData: MutableLiveData<UserSkippedData> = MutableLiveData()
 
     private var haveCredentialsBeenUploaded = false
     private var hasImageBeenUploaded = false
@@ -115,6 +118,10 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
             userPacksEnrolledLiveData.value = newPackIds
         }
 
+        override fun userSkippedMealDataFetchSuccessful(userSkippedData: UserSkippedData) {
+            userSkippedLiveData.value = userSkippedData
+        }
+
     }
 
     fun setFirebaseSourceCallback() =
@@ -156,6 +163,14 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
 
     fun enrollOrUnenroll(uid: String, newPackIds: ArrayList<Long>) {
         firebaseSource.enrollOrUnenroll(uid, newPackIds)
+    }
+
+    fun getUserSkippedData(uid: String) {
+        firebaseSource.getUserSkippedData(uid)
+    }
+
+    fun skipAMeal(uid: String, userSkippedData: UserSkippedData) {
+        firebaseSource.skipAMeal(uid, userSkippedData)
     }
 
 }

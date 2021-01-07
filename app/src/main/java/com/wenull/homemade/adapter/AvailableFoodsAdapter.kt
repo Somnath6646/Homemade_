@@ -44,7 +44,7 @@ class AvailableFoodsAdapter : RecyclerView.Adapter<AvailableFoodsViewHolder>() {
 class AvailableFoodsViewHolder(private val binding: ItemAvailableFoodsBinding): RecyclerView.ViewHolder(binding.root) {
     fun bind(food: OrderServer) {
 
-        val downloadReference = "${Constants.COLLECTIONS_FOODS}/${Constants.PACK_}${food.packId}/${food.imageName}"
+        val downloadReference = "${Constants.COLLECTION_FOODS}/${Constants.PACK_}${food.packId}/${food.imageName}"
 
         val imageReference =
             Firebase.storage.reference.child(downloadReference)

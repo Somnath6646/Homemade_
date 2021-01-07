@@ -31,9 +31,10 @@ class Constants {
 
         // Firebase reference values
         const val COLLECTION_USERS = "users"
-        const val IMAGES_USERS = "users"
         const val COLLECTION_FOOD_PACK = "packs"
-        const val COLLECTIONS_FOODS = "foods"
+        const val COLLECTION_FOODS = "foods"
+        const val COLLECTION_SKIPPED = "skipped"
+        const val IMAGES_USERS = "users"
         const val PACK_ = "pack_"
         const val FIELD_ID = "id"
         const val FIELD_NAME = "name"
@@ -54,6 +55,9 @@ class Constants {
         const val FIELD_LOCALITY = "locality"
         const val FIELD_CITY = "city"
         const val FIELD_PINCODE = "pincode"
+        const val FIELD_SKIPPED_MEALS = "skippedMeals"
+        const val FIELD_DATE = "date"
+        const val FIELD_FOOD_ID = "foodId"
 
         // Formats
         const val DAY_OF_WEEK = "EEEE"
@@ -63,6 +67,16 @@ class Constants {
 
         // Fragment constants
         const val BUNDLE_FOOD_PACK = "pack"
+        const val BUNDLE_USER_SKIPPED_DATA = "userSkippedData"
+
+        // Days of week
+        const val SUNDAY = "Sunday"
+        const val MONDAY = "Monday"
+        const val TUESDAY = "Tuesday"
+        const val WEDNESDAY = "Wednesday"
+        const val THURSDAY = "Thursday"
+        const val FRIDAY = "Friday"
+        const val SATURDAY = "Saturday"
 
     }
 

@@ -10,14 +10,10 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.wenull.homemade.utils.helper.Constants
-import com.wenull.homemade.utils.model.FoodPack
-import com.wenull.homemade.utils.model.OrderServer
-import com.wenull.homemade.utils.model.User
-import com.wenull.homemade.utils.model.UserAddress
+import com.wenull.homemade.utils.model.*
 import java.util.concurrent.TimeUnit
 
 class FirebaseSource(private val activity: Activity) {
@@ -263,7 +259,7 @@ class FirebaseSource(private val activity: Activity) {
 
         firestore.collection(Constants.COLLECTION_FOOD_PACK)
             .document(packId.toString())
-            .collection(Constants.COLLECTIONS_FOODS)
+            .collection(Constants.COLLECTION_FOODS)
             .whereEqualTo(Constants.FIELD_DAY, day)
             .whereEqualTo(Constants.FIELD_PACK_ID, packId)
             .get()
@@ -315,7 +311,7 @@ class FirebaseSource(private val activity: Activity) {
         Log.i("PackId firebaseSource", "$packId")
 
         firestore.collection(Constants.COLLECTION_FOOD_PACK).document(packId.toString())
-            .collection(Constants.COLLECTIONS_FOODS).get()
+            .collection(Constants.COLLECTION_FOODS).get()
             .addOnSuccessListener { snapshot ->
 
                 val documents = snapshot.documents
@@ -365,6 +361,59 @@ class FirebaseSource(private val activity: Activity) {
 
     }
 
-    // Managing skipping orders
+    fun getUserSkippedData(uid: String) {
+
+        firestore.collection(Constants.COLLECTION_SKIPPED).document(uid)
+            .get()
+            .addOnCompleteListener { task ->
+                if(task.isSuccessful) {
+
+                    val data = task.result?.data
+
+                    if(data != null) {
+
+                        val skippedMeals = ArrayList<OrderSkipped>()
+                        (data[Constants.FIELD_SKIPPED_MEALS] as ArrayList<Map<String, *>>).forEach { meal ->
+                            val skippedMeal = OrderSkipped(
+                                date = meal[Constants.FIELD_DATE] as String,
+                                day = meal[Constants.FIELD_DAY] as String,
+                                foodId = meal[Constants.FIELD_FOOD_ID] as Long,
+                                packId = meal[Constants.FIELD_PACK_ID] as Long
+                            )
+                            skippedMeals.add(skippedMeal)
+                        }
+
+                        val userSkippedData = UserSkippedData(
+                            uid = data[Constants.FIELD_UID] as String,
+                            skippedMeals = skippedMeals
+                        )
+
+                        firebaseSourceCallback.userSkippedMealDataFetchSuccessful(userSkippedData)
+
+                        Log.i("UserSkippedData", "$data")
+
+                    } else {
+                        Log.i("UserSkippedData", "null")
+                    }
+
+                }
+            }
+
+    }
+
+    fun skipAMeal(uid: String, userSkippedData: UserSkippedData) {
+
+        firestore.collection(Constants.COLLECTION_SKIPPED)
+            .document(uid)
+            .set(userSkippedData)
+            .addOnCompleteListener { task ->
+                if(task.isSuccessful) {
+                    Log.i("MealSkip", "Successful")
+                } else {
+                    Log.i("MealSkip", "Unsuccessful")
+                }
+            }
+
+    }
 
 }
