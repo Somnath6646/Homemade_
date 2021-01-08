@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wenull.homemade.R
 import com.wenull.homemade.adapter.AvailableFoodsAdapter
@@ -41,6 +42,10 @@ class PackContentFragment : BaseFragment<FragmentPackcontentBinding, HomemadeVie
         })
 
         setUpRecyclerView()
+
+        binding.backIcon.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
     }
 

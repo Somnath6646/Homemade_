@@ -1,6 +1,7 @@
 package com.wenull.homemade.ui.fragments
 
 import android.os.Bundle
+import androidx.navigation.fragment.findNavController
 import com.wenull.homemade.R
 import com.wenull.homemade.databinding.FragmentSkippedOrdersBinding
 import com.wenull.homemade.ui.fragments.base.BaseFragment
@@ -16,6 +17,10 @@ class SkippedOrdersFragment : BaseFragment<FragmentSkippedOrdersBinding, Homemad
         super.onActivityCreated(savedInstanceState)
 
         binding.lifecycleOwner = viewLifecycleOwner
+
+        binding.backIconSkippedOrders.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
     }
 }

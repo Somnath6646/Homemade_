@@ -78,43 +78,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>(), Fra
 
         fetchUserData()
 
-        defineLayout()
+
 
     }
 
-    private fun defineLayout() {
 
-            binding.motionLayout.addTransitionListener(object : MotionLayout.TransitionListener{
-                override fun onTransitionTrigger(
-                    p0: MotionLayout?,
-                    p1: Int,
-                    p2: Boolean,
-                    p3: Float
-                ) {
-                    Log.i("Transition", "triggered")
-
-                }
-
-                override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
-                    Log.i("Transition", "Started")
-                    if (binding.layoutContent.homeFragmentContainer.radius == 20f) {
-                        binding.layoutContent.homeFragmentContainer.radius = 0f
-                        setWindowColor(R.color.dull_white)
-                    } else {
-                        binding.layoutContent.homeFragmentContainer.radius = 20f
-                    }
-                }
-
-                override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {
-                    Log.i("Transition", "Change")
-                }
-
-                override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {
-                    Log.i("Transition", "ended")
-                }
-            })
-
-    }
 
     private fun updateLists(packIds: ArrayList<Long>) {
         viewModel.fetchPackDetails()
