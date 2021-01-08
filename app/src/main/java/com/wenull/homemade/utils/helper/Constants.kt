@@ -31,7 +31,7 @@ class Constants {
 
         // Firebase reference values
         const val COLLECTION_USERS = "users"
-        const val COLLECTION_FOOD_PACK = "packs"
+        const val COLLECTION_PACKS = "packs"
         const val COLLECTION_FOODS = "foods"
         const val COLLECTION_SKIPPED = "skipped"
         const val IMAGES_USERS = "users"
@@ -58,6 +58,7 @@ class Constants {
         const val FIELD_SKIPPED_MEALS = "skippedMeals"
         const val FIELD_DATE = "date"
         const val FIELD_FOOD_ID = "foodId"
+        const val FIELD_SKIP_LIMIT = "skipLimit"
 
         // Formats
         const val DAY_OF_WEEK = "EEEE"

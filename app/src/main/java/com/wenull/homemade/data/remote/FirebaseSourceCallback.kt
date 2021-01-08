@@ -34,7 +34,7 @@ interface FirebaseSourceCallback {
 
     // Getting today's food details
 
-    fun fetchTodayFoodDetails(food: OrderServer)
+    fun fetchTodayFoodDetails(foods: ArrayList<OrderServer>)
 
     // Getting pack details
 
@@ -48,5 +48,9 @@ interface FirebaseSourceCallback {
     // Getting user skipped meal data
 
     fun userSkippedMealDataFetchSuccessful(userSkippedData: UserSkippedData)
+
+    // Getting skipped foods
+
+    fun skippedMealsFetchSuccessful(skippedFoods: ArrayList<OrderServer>)
 
 }

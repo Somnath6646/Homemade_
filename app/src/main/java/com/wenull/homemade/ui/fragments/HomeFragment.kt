@@ -49,7 +49,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>(), Fra
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        binding.lifecycleOwner = requireActivity()
+        binding.lifecycleOwner = viewLifecycleOwner
 
         viewModel.setFirebaseSourceCallback()
 
@@ -78,11 +78,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>(), Fra
 
         fetchUserData()
 
-
-
     }
-
-
 
     private fun updateLists(packIds: ArrayList<Long>) {
         viewModel.fetchPackDetails()
@@ -98,22 +94,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>(), Fra
 
         viewModel.fetchUserData(auth.currentUser!!.uid)
 
-        viewModel.userData.observe(viewLifecycleOwner, Observer { event ->
+        viewModel.userData.observe(viewLifecycleOwner, Observer { user ->
 
-            event?.getContentIfNotHandled()?.let { user ->
+            this.user = user
 
-                this.user = user
+            val packs = user.packsEnrolled
 
-                val packs = user.packsEnrolled
+            Log.i("Packs", "$packs")
 
-                Log.i("Packs", "$packs")
-
-                if(packs.size > 0) {
-                    setUserPackAndFoodRecyclerView(packs)
-                } else {
-                    setUpRecyclerView(ArrayList())
-                }
-
+            if(packs.size > 0) {
+                setUserPackAndFoodRecyclerView(packs)
+            } else {
+                setUpRecyclerView(ArrayList())
             }
 
         })
@@ -138,7 +130,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>(), Fra
         foodsAdapter = AvailableFoodsAdapter()
         binding.layoutContent.recyclerViewAvailableFoods.adapter = foodsAdapter
         binding.layoutContent.recyclerViewAvailableFoods.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        updateFoods(packIds[0])
+        updateFoods(packIds)
 
     }
 
@@ -153,12 +145,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>(), Fra
         viewModel.enrollOrUnenroll(auth.currentUser!!.uid, newPackIds)
     }
 
-    private fun updateFoods(packId: Long) {
+    private fun updateFoods(packIds: ArrayList<Long>) {
         val day = SimpleDateFormat(Constants.DAY_OF_WEEK, Locale.ENGLISH).format(System.currentTimeMillis())
         Log.i("Day of week", day)
-        viewModel.fetchTodayFoodDetails(day, packId)
-        viewModel.todayFood.observe(viewLifecycleOwner, Observer { food ->
-            foodsAdapter.setList(mutableListOf(food) as ArrayList<OrderServer>)
+        viewModel.fetchTodayFoodDetails(day, packIds)
+        viewModel.todayFood.observe(viewLifecycleOwner, Observer { foods ->
+            foodsAdapter.setList(foods)
         })
     }
 

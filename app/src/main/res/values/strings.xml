@@ -29,4 +29,5 @@
     <string name="opt_out_meal_message">Choose day to opt out from a meal</string>
     <string name="cancel">Cancel</string>
     <string name="done">Done</string>
+    <string name="unskip">Unskip</string>
 </resources>

@@ -174,7 +174,7 @@ class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel()
 
     // Getting user data
 
-    val userData: LiveData<Event<User>>
+    val userData: LiveData<User>
         get() = repository.userData
 
     fun fetchUserData(uid: String) {
@@ -183,11 +183,11 @@ class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel()
 
     // Getting today's food details
 
-    val todayFood: LiveData<OrderServer>
+    val todayFood: LiveData<ArrayList<OrderServer>>
         get() = repository.todayFoodLiveData
 
-    fun fetchTodayFoodDetails(day: String, packId: Long) {
-        repository.fetchTodayFoodDetails(day, packId)
+    fun fetchTodayFoodDetails(day: String, packIds: ArrayList<Long>) {
+        repository.fetchTodayFoodDetails(day, packIds)
     }
 
     // Updating packs enrolled data
@@ -212,6 +212,15 @@ class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel()
 
     fun skipAMeal(uid: String, userSkippedData: UserSkippedData) {
         repository.skipAMeal(uid, userSkippedData)
+    }
+
+    // Getting skipped foods
+
+    val skippedFoods: LiveData<ArrayList<OrderServer>>
+        get() = repository.skippedFoodsLiveData
+
+    fun getSkippedMeals(skippedMeals: ArrayList<OrderSkipped>) {
+        repository.getSkippedMeals(skippedMeals)
     }
 
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {}

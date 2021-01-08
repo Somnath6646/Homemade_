@@ -16,7 +16,7 @@ import com.wenull.homemade.utils.helper.Constants
 import com.wenull.homemade.utils.model.FoodPack
 
 
-class UserPacksAdapter(private val optOutMenuClickListener: (FoodPack, View) -> Unit) : RecyclerView.Adapter<UserPacksViewHolder>(){
+class UserPacksAdapter(private val optOutMenuClickListener: (FoodPack, View) -> Unit) : RecyclerView.Adapter<UserPacksViewHolder>() {
 
     private val _packs = ArrayList<FoodPack>()
 
@@ -40,12 +40,12 @@ class UserPacksAdapter(private val optOutMenuClickListener: (FoodPack, View) -> 
 
 }
 
-class UserPacksViewHolder(private val binding: ItemUserOwnedPacksBinding, private val optOutMenuClickListener: (FoodPack, View) -> Unit): RecyclerView.ViewHolder(binding.root) {
+class UserPacksViewHolder(private val binding: ItemUserOwnedPacksBinding, private val optOutMenuClickListener: (FoodPack, View) -> Unit) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(pack: FoodPack) {
 
         val imageReference =
-            Firebase.storage.reference.child("${Constants.COLLECTION_FOOD_PACK}/${pack.imageName}")
+            Firebase.storage.reference.child("${Constants.COLLECTION_PACKS}/${pack.imageName}")
 
         var imageUrl: Uri? = null
 

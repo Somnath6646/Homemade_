@@ -1,9 +1,7 @@
 package com.wenull.homemade.adapter
 
-import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -46,7 +44,7 @@ class AvailablePacksViewHolder(private val binding: ItemAvailablePacksBinding, p
     fun bind(pack: FoodPack, packIds: ArrayList<Long>) {
 
         val imageReference =
-            Firebase.storage.reference.child("${Constants.COLLECTION_FOOD_PACK}/${pack.imageName}")
+            Firebase.storage.reference.child("${Constants.COLLECTION_PACKS}/${pack.imageName}")
 
         imageReference.downloadUrl
             .addOnSuccessListener { uri ->

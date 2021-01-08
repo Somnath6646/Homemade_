@@ -34,7 +34,7 @@ class OptoutBottomSheetFragment : BottomSheetDialogFragment() {
 
     private val auth = FirebaseAuth.getInstance()
 
-    private var mealToSkip: OrderSkipped = OrderSkipped("", "", -1L, -1L)
+    private var mealToSkip: OrderSkipped = OrderSkipped("", "", -1L, -1L, 0L)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,7 +77,8 @@ class OptoutBottomSheetFragment : BottomSheetDialogFragment() {
                 date = date,
                 day = getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)),
                 foodId = getFoodId(calendar.get(Calendar.DAY_OF_WEEK)),
-                packId = pack.id
+                packId = pack.id,
+                skipLimit = pack.skipTimeLimit
             )
         }
 

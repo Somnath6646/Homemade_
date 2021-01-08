@@ -221,7 +221,7 @@ class FirebaseSource(private val activity: Activity) {
 
     fun fetchPackDetails() {
 
-        firestore.collection(Constants.COLLECTION_FOOD_PACK).get()
+        firestore.collection(Constants.COLLECTION_PACKS).get()
             .addOnSuccessListener { data ->
 
                 if(!data.isEmpty) {
@@ -255,54 +255,62 @@ class FirebaseSource(private val activity: Activity) {
 
     // Fetching today's food details
 
-    fun fetchTodayFoodDetails(day: String, packId: Long) {
+    fun fetchTodayFoodDetails(day: String, packIds: ArrayList<Long>) {
 
-        firestore.collection(Constants.COLLECTION_FOOD_PACK)
-            .document(packId.toString())
-            .collection(Constants.COLLECTION_FOODS)
-            .whereEqualTo(Constants.FIELD_DAY, day)
-            .whereEqualTo(Constants.FIELD_PACK_ID, packId)
-            .get()
-            .addOnCompleteListener { task ->
+        val foods = ArrayList<OrderServer>()
 
-                if(task.isSuccessful) {
+        packIds.forEach { packId ->
 
-                    val documents = task.result?.documents
+            firestore.collection(Constants.COLLECTION_PACKS)
+                .document(packId.toString())
+                .collection(Constants.COLLECTION_FOODS)
+                .whereEqualTo(Constants.FIELD_DAY, day)
+                .whereEqualTo(Constants.FIELD_PACK_ID, packId)
+                .get()
+                .addOnCompleteListener { task ->
 
-                    if(documents != null) {
+                    if (task.isSuccessful) {
 
-                        if(documents.size > 0) {
+                        val documents = task.result?.documents
 
-                            val document = documents[0]
+                        if (documents != null) {
 
-                            Log.i("TodayFood", "${documents[0]}")
+                            if (documents.size > 0) {
 
-                            val food = OrderServer(
-                                id = document!![Constants.FIELD_ID] as Long,
-                                name = document[Constants.FIELD_NAME] as String,
-                                description = document[Constants.FIELD_DESCRIPTION] as String,
-                                price = document[Constants.FIELD_PRICE] as String,
-                                day = document[Constants.FIELD_DAY] as String,
-                                imageName = document[Constants.FIELD_IMAGE_NAME] as String,
-                                packId = document[Constants.FIELD_PACK_ID] as Long
-                            )
+                                val document = documents[0]
 
-                            Log.i("TodayFood", "${food}")
+                                Log.i("TodayFood", "${documents[0]}")
 
-                            firebaseSourceCallback.fetchTodayFoodDetails(food)
+                                val food = OrderServer(
+                                    id = document!![Constants.FIELD_ID] as Long,
+                                    name = document[Constants.FIELD_NAME] as String,
+                                    description = document[Constants.FIELD_DESCRIPTION] as String,
+                                    price = document[Constants.FIELD_PRICE] as String,
+                                    day = document[Constants.FIELD_DAY] as String,
+                                    imageName = document[Constants.FIELD_IMAGE_NAME] as String,
+                                    packId = document[Constants.FIELD_PACK_ID] as Long
+                                )
 
+                                foods.add(food)
+
+                                Log.i("TodayFood", "$food")
+
+                                firebaseSourceCallback.fetchTodayFoodDetails(foods)
+
+                            }
+
+                        } else {
+                            Log.i("TodayFoodGet", "Doc is null")
                         }
 
                     } else {
-                        Log.i("TodayFoodGet", "Doc is null")
+                        Log.i("TodayFoodGet", "Failed")
+                        task.exception?.printStackTrace()
                     }
 
-                } else {
-                    Log.i("TodayFoodGet", "Failed")
-                    task.exception?.printStackTrace()
                 }
 
-            }
+        }
 
     }
 
@@ -310,7 +318,7 @@ class FirebaseSource(private val activity: Activity) {
 
         Log.i("PackId firebaseSource", "$packId")
 
-        firestore.collection(Constants.COLLECTION_FOOD_PACK).document(packId.toString())
+        firestore.collection(Constants.COLLECTION_PACKS).document(packId.toString())
             .collection(Constants.COLLECTION_FOODS).get()
             .addOnSuccessListener { snapshot ->
 
@@ -378,7 +386,8 @@ class FirebaseSource(private val activity: Activity) {
                                 date = meal[Constants.FIELD_DATE] as String,
                                 day = meal[Constants.FIELD_DAY] as String,
                                 foodId = meal[Constants.FIELD_FOOD_ID] as Long,
-                                packId = meal[Constants.FIELD_PACK_ID] as Long
+                                packId = meal[Constants.FIELD_PACK_ID] as Long,
+                                skipLimit = meal[Constants.FIELD_SKIP_LIMIT] as Long
                             )
                             skippedMeals.add(skippedMeal)
                         }
@@ -398,6 +407,57 @@ class FirebaseSource(private val activity: Activity) {
 
                 }
             }
+
+    }
+
+    // Getting skipped foods from skipped meal data
+
+    fun getSkippedMeals(skippedMeals: ArrayList<OrderSkipped>) {
+
+        val skippedFoods = ArrayList<OrderServer>()
+
+        skippedMeals.forEach { meal ->
+
+            firestore.collection(Constants.COLLECTION_PACKS)
+                .document(meal.packId.toString())
+                .collection(Constants.COLLECTION_FOODS)
+                .whereEqualTo(Constants.FIELD_ID, meal.foodId)
+                .get()
+                .addOnCompleteListener { task ->
+
+                    if (task.isSuccessful) {
+
+                        val documents = task.result?.documents
+
+                        if (documents != null) {
+
+                            val document = documents[0]
+
+                            val food = OrderServer(
+                                id = document!![Constants.FIELD_ID] as Long,
+                                name = document[Constants.FIELD_NAME] as String,
+                                description = document[Constants.FIELD_DESCRIPTION] as String,
+                                price = document[Constants.FIELD_PRICE] as String,
+                                day = document[Constants.FIELD_DAY] as String,
+                                imageName = document[Constants.FIELD_IMAGE_NAME] as String,
+                                packId = document[Constants.FIELD_PACK_ID] as Long
+                            )
+
+                            Log.i("SkippedFoodMeal", "$food")
+
+                            skippedFoods.add(food)
+
+                            firebaseSourceCallback.skippedMealsFetchSuccessful(skippedFoods)
+
+                        }
+
+                    }
+
+                }
+
+        }
+
+        firebaseSourceCallback.skippedMealsFetchSuccessful(skippedFoods)
 
     }
 

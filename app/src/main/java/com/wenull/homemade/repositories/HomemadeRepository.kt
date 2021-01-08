@@ -10,10 +10,7 @@ import com.wenull.homemade.data.remote.FirebaseSource
 import com.wenull.homemade.data.remote.FirebaseSourceCallback
 import com.wenull.homemade.utils.helper.Constants
 import com.wenull.homemade.utils.helper.Event
-import com.wenull.homemade.utils.model.FoodPack
-import com.wenull.homemade.utils.model.OrderServer
-import com.wenull.homemade.utils.model.User
-import com.wenull.homemade.utils.model.UserSkippedData
+import com.wenull.homemade.utils.model.*
 import java.lang.Exception
 
 class HomemadeRepository(private val firebaseSource: FirebaseSource) {
@@ -28,15 +25,17 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
 
     val packsLiveData: MutableLiveData<ArrayList<FoodPack>> = MutableLiveData()
     val packFoodsLiveData: MutableLiveData<ArrayList<OrderServer>> = MutableLiveData()
-    val todayFoodLiveData: MutableLiveData<OrderServer> = MutableLiveData()
+    val todayFoodLiveData: MutableLiveData<ArrayList<OrderServer>> = MutableLiveData()
 
     val userExists: MutableLiveData<Event<Boolean>> = MutableLiveData()
 
-    val userData: MutableLiveData<Event<User>> = MutableLiveData()
+    val userData: MutableLiveData<User> = MutableLiveData()
 
     val userPacksEnrolledLiveData: MutableLiveData<ArrayList<Long>> = MutableLiveData()
 
     val userSkippedLiveData: MutableLiveData<UserSkippedData> = MutableLiveData()
+
+    val skippedFoodsLiveData: MutableLiveData<ArrayList<OrderServer>> = MutableLiveData()
 
     private var haveCredentialsBeenUploaded = false
     private var hasImageBeenUploaded = false
@@ -98,11 +97,11 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
         }
 
         override fun fetchUserData(user: User) {
-            userData.value = Event(user)
+            userData.value = user
         }
 
-        override fun fetchTodayFoodDetails(food: OrderServer) {
-            todayFoodLiveData.value = food
+        override fun fetchTodayFoodDetails(foods: ArrayList<OrderServer>) {
+            todayFoodLiveData.value = foods
         }
 
         override fun packDetailsFetchSuccessful(packs: ArrayList<FoodPack>) {
@@ -120,6 +119,10 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
 
         override fun userSkippedMealDataFetchSuccessful(userSkippedData: UserSkippedData) {
             userSkippedLiveData.value = userSkippedData
+        }
+
+        override fun skippedMealsFetchSuccessful(skippedFoods: ArrayList<OrderServer>) {
+            skippedFoodsLiveData.value = skippedFoods
         }
 
     }
@@ -157,8 +160,8 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
         firebaseSource.fetchUserData(uid)
     }
 
-    fun fetchTodayFoodDetails(day: String, packId: Long) {
-        firebaseSource.fetchTodayFoodDetails(day, packId)
+    fun fetchTodayFoodDetails(day: String, packIds: ArrayList<Long>) {
+        firebaseSource.fetchTodayFoodDetails(day, packIds)
     }
 
     fun enrollOrUnenroll(uid: String, newPackIds: ArrayList<Long>) {
@@ -171,6 +174,10 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
 
     fun skipAMeal(uid: String, userSkippedData: UserSkippedData) {
         firebaseSource.skipAMeal(uid, userSkippedData)
+    }
+
+    fun getSkippedMeals(skippedMeals: ArrayList<OrderSkipped>) {
+        firebaseSource.getSkippedMeals(skippedMeals)
     }
 
 }
