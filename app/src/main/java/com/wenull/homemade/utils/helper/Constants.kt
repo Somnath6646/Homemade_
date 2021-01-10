@@ -19,6 +19,13 @@ class Constants {
         const val ALL_PACKS = "All Packs"
         const val AVAILABLE_FOODS = "Available Foods"
         const val AVAILABLE_PACKS = "Available Packs"
+        const val UNSKIP_DIALOG_MAIN_MESSAGE = "This action cannot be undone"
+        const val UNSKIP_DIALOG_SUB_MESSAGE = "Are you sure you want to unskip this meal?"
+        const val UNSKIP_SUCCESSFUL = "Meal unskipped"
+        const val UNSKIP_UNSUCCESSFUL = "Meal cannot be unskipped"
+        const val UNSKIP_TIME_LIMIT_ENDED_MESSAGE = "This meal cannot be unskipped as you have exceeded the time limit"
+        const val PLEASE_SELECT_A_DATE = "Please select a date"
+        const val MEAL_ALREADY_SKIPPED = "You have already skipped that meal"
 
         // Values
         const val SUCCESSFUL = true

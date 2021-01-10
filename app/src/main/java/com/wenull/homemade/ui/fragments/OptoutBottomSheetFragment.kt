@@ -5,8 +5,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.wenull.homemade.R
@@ -55,6 +57,13 @@ class OptoutBottomSheetFragment : BottomSheetDialogFragment() {
         Log.i("Pack in bottom sheet", "$pack")
         Log.i("Skip in bottom sheet", "$userSkippedData")
         setUpCalenderView()
+
+        viewModel.toastMessage.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            it.getContentIfNotHandled().let {
+                if (it != null)
+                    Toast.makeText(activity, it.toString(), Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun setUpCalenderView() {
@@ -68,11 +77,14 @@ class OptoutBottomSheetFragment : BottomSheetDialogFragment() {
         else
             binding.calenderView.minDate = calendar.timeInMillis
 
+        binding.calenderView.setDate(0L, false, false)
+
         binding.calenderView.setOnDateChangeListener { view1, year, month, dayOfMonth ->
             calendar.set(year, month, dayOfMonth)
             println("${calendar.get(Calendar.HOUR_OF_DAY)} ${calendar.get(Calendar.HOUR)} ${calendar.get(Calendar.MONTH)} ${calendar.get(Calendar.DAY_OF_WEEK)}")
             val date = "$dayOfMonth/${month + 1}/$year"
             Log.i("Date to skip", date)
+
             mealToSkip = OrderSkipped(
                 date = date,
                 day = getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)),
@@ -86,14 +98,20 @@ class OptoutBottomSheetFragment : BottomSheetDialogFragment() {
 
         binding.doneButton.setOnClickListener {
 
-            if(userSkippedData.skippedMeals.contains(mealToSkip)) {
-                Log.i("Meal to skip", "Already present")
-            } else {
-                userSkippedData.skippedMeals.add(mealToSkip)
-                viewModel.skipAMeal(auth.currentUser!!.uid, userSkippedData)
-            }
+            if(mealToSkip.foodId != -1L) {
 
-            dismiss()
+                if (userSkippedData.skippedMeals.contains(mealToSkip)) {
+                    viewModel.createToast(Constants.MEAL_ALREADY_SKIPPED)
+                } else {
+                    userSkippedData.skippedMeals.add(mealToSkip)
+                    viewModel.skipAMeal(auth.currentUser!!.uid, userSkippedData)
+                }
+
+                dismiss()
+
+            } else {
+                viewModel.createToast(Constants.PLEASE_SELECT_A_DATE)
+            }
 
         }
 

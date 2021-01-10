@@ -30,4 +30,6 @@
     <string name="cancel">Cancel</string>
     <string name="done">Done</string>
     <string name="unskip">Unskip</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
 </resources>

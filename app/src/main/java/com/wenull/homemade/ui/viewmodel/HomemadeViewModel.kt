@@ -8,18 +8,20 @@ import androidx.databinding.Observable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.wenull.homemade.utils.helper.Constants
 import com.wenull.homemade.repositories.HomemadeRepository
 import com.wenull.homemade.utils.helper.Event
 import com.wenull.homemade.utils.model.*
-import kotlinx.coroutines.launch
 
 class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel(), Observable {
 
+    // Toast message
+
     val toastMessage: LiveData<Event<String>>
         get() = repository.eventIndicator
+
+
 
     fun setFirebaseSourceCallback() = repository.setFirebaseSourceCallback()
 
@@ -216,11 +218,24 @@ class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel()
 
     // Getting skipped foods
 
-    val skippedFoods: LiveData<ArrayList<OrderServer>>
+    val skippedFoods: LiveData<ArrayList<OrderUnskip>>
         get() = repository.skippedFoodsLiveData
 
     fun getSkippedMeals(skippedMeals: ArrayList<OrderSkipped>) {
         repository.getSkippedMeals(skippedMeals)
+    }
+
+    // Unskip a meal
+
+    val isUnskipSuccessful: LiveData<Boolean>
+        get() = repository.isUnskipSuccessfulLiveData
+
+    fun unskipMeal(uid: String, skippedMeal: OrderSkipped) {
+        repository.unskipMeal(uid, skippedMeal)
+    }
+
+    fun createToast(message: String) {
+        repository.createToast(message)
     }
 
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {}

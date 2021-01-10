@@ -51,6 +51,10 @@ interface FirebaseSourceCallback {
 
     // Getting skipped foods
 
-    fun skippedMealsFetchSuccessful(skippedFoods: ArrayList<OrderServer>)
+    fun skippedMealsFetchSuccessful(ordersUnskip: ArrayList<OrderUnskip>)
+
+    // Unskip a meal
+
+    fun isUnskipSuccessful(isSuccessful: Boolean)
 
 }

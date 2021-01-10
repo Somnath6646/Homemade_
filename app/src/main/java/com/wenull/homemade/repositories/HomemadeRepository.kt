@@ -35,7 +35,9 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
 
     val userSkippedLiveData: MutableLiveData<UserSkippedData> = MutableLiveData()
 
-    val skippedFoodsLiveData: MutableLiveData<ArrayList<OrderServer>> = MutableLiveData()
+    val skippedFoodsLiveData: MutableLiveData<ArrayList<OrderUnskip>> = MutableLiveData()
+
+    val isUnskipSuccessfulLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
     private var haveCredentialsBeenUploaded = false
     private var hasImageBeenUploaded = false
@@ -121,8 +123,12 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
             userSkippedLiveData.value = userSkippedData
         }
 
-        override fun skippedMealsFetchSuccessful(skippedFoods: ArrayList<OrderServer>) {
-            skippedFoodsLiveData.value = skippedFoods
+        override fun skippedMealsFetchSuccessful(ordersUnskip: ArrayList<OrderUnskip>) {
+            skippedFoodsLiveData.value = ordersUnskip
+        }
+
+        override fun isUnskipSuccessful(isSuccessful: Boolean) {
+            isUnskipSuccessfulLiveData.value = isSuccessful
         }
 
     }
@@ -178,6 +184,14 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
 
     fun getSkippedMeals(skippedMeals: ArrayList<OrderSkipped>) {
         firebaseSource.getSkippedMeals(skippedMeals)
+    }
+
+    fun unskipMeal(uid: String, skippedMeal: OrderSkipped) {
+        firebaseSource.unskipMeal(uid, skippedMeal)
+    }
+
+    fun createToast(message: String) {
+        eventIndicator.value = Event(message)
     }
 
 }

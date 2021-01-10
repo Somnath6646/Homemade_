@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -414,7 +415,7 @@ class FirebaseSource(private val activity: Activity) {
 
     fun getSkippedMeals(skippedMeals: ArrayList<OrderSkipped>) {
 
-        val skippedFoods = ArrayList<OrderServer>()
+        val skippedFoods = ArrayList<OrderUnskip>()
 
         skippedMeals.forEach { meal ->
 
@@ -445,7 +446,12 @@ class FirebaseSource(private val activity: Activity) {
 
                             Log.i("SkippedFoodMeal", "$food")
 
-                            skippedFoods.add(food)
+                            val orderUnskip = OrderUnskip(
+                                food = food,
+                                skippedMeal = meal
+                            )
+
+                            skippedFoods.add(orderUnskip)
 
                             firebaseSourceCallback.skippedMealsFetchSuccessful(skippedFoods)
 
@@ -472,6 +478,18 @@ class FirebaseSource(private val activity: Activity) {
                 } else {
                     Log.i("MealSkip", "Unsuccessful")
                 }
+            }
+
+    }
+
+    // Unskip a skipped meal
+
+    fun unskipMeal(uid: String, skippedMeal: OrderSkipped) {
+
+        firestore.collection(Constants.COLLECTION_SKIPPED).document(uid)
+            .update(Constants.FIELD_SKIPPED_MEALS, FieldValue.arrayRemove(skippedMeal))
+            .addOnCompleteListener { task ->
+                firebaseSourceCallback.isUnskipSuccessful(task.isSuccessful)
             }
 
     }
