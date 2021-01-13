@@ -26,6 +26,11 @@ class Constants {
         const val UNSKIP_TIME_LIMIT_ENDED_MESSAGE = "This meal cannot be unskipped as you have exceeded the time limit"
         const val PLEASE_SELECT_A_DATE = "Please select a date"
         const val MEAL_ALREADY_SKIPPED = "You have already skipped that meal"
+        const val GO_TO_EDIT_PROFILE_DIALOG_MAIN_MESSAGE = "Are you sure?"
+        const val GO_TO_EDIT_PROFILE_DIALOG_SUB_MESSAGE = "Are you sure you you want to edit your information?"
+        const val TOAST_CREDENTIALS_IDENTICAL = "Your credentials aur same"
+        const val TOAST_CREDENTIALS_UPDATE_SUCCESSFUL = "Credentials successfully updated"
+        const val TOAST_CREDENTIALS_UPDATE_UNSUCCESSFUL = "Credentials update failed"
 
         // Values
         const val SUCCESSFUL = true
@@ -43,6 +48,7 @@ class Constants {
         const val COLLECTION_SKIPPED = "skipped"
         const val IMAGES_USERS = "users"
         const val PACK_ = "pack_"
+        const val USER = "user"
         const val FIELD_ID = "id"
         const val FIELD_NAME = "name"
         const val FIELD_DESCRIPTION = "description"

@@ -39,6 +39,8 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
 
     val isUnskipSuccessfulLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
+    val userCredentialsUpdateLiveData: MutableLiveData<Boolean> = MutableLiveData()
+
     private var haveCredentialsBeenUploaded = false
     private var hasImageBeenUploaded = false
 
@@ -131,6 +133,10 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
             isUnskipSuccessfulLiveData.value = isSuccessful
         }
 
+        override fun updateUserCredentialsSuccessful(isSuccessful: Boolean) {
+            userCredentialsUpdateLiveData.value = isSuccessful
+        }
+
     }
 
     fun setFirebaseSourceCallback() =
@@ -192,6 +198,10 @@ class HomemadeRepository(private val firebaseSource: FirebaseSource) {
 
     fun createToast(message: String) {
         eventIndicator.value = Event(message)
+    }
+
+    fun updateUserCredentials(user: User) {
+        firebaseSource.updateUserCredentials(user)
     }
 
 }

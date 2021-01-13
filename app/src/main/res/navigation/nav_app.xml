@@ -104,6 +104,9 @@
         <action
             android:id="@+id/action_profileFragment_to_optoutBottomsheetFragment"
             app:destination="@id/optoutBottomsheetFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/packContentFragment"
@@ -128,4 +131,15 @@
         android:id="@+id/skippedOrdersFragment"
         android:name="com.wenull.homemade.ui.fragments.SkippedOrdersFragment"
         android:label="SkippedOrdersFragment" />
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.wenull.homemade.ui.fragments.EditProfileFragment"
+        android:label="EditProfileFragment"
+        tools:layout="@layout/fragment_edit_profile">
+
+        <argument
+            android:name="user"
+            app:argType="com.wenull.homemade.utils.model.User" />
+
+    </fragment>
 </navigation>

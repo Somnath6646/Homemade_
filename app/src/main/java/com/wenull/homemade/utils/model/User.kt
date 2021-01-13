@@ -1,5 +1,9 @@
 package com.wenull.homemade.utils.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class User(
     val uid: String,
     val phoneNumber: String,
@@ -8,4 +12,4 @@ data class User(
     val address: UserAddress,
     val packsEnrolled: ArrayList<Long>,
     val imageName: String
-)
+) : Parcelable

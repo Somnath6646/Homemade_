@@ -21,8 +21,6 @@ class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel()
     val toastMessage: LiveData<Event<String>>
         get() = repository.eventIndicator
 
-
-
     fun setFirebaseSourceCallback() = repository.setFirebaseSourceCallback()
 
     // Auth starts
@@ -236,6 +234,15 @@ class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel()
 
     fun createToast(message: String) {
         repository.createToast(message)
+    }
+
+    // Update user credentials
+
+    val userCredentialsUpdateSuccessful: LiveData<Boolean>
+        get() = repository.userCredentialsUpdateLiveData
+
+    fun updateUserCredentials(user: User) {
+        repository.updateUserCredentials(user)
     }
 
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {}

@@ -57,4 +57,8 @@ interface FirebaseSourceCallback {
 
     fun isUnskipSuccessful(isSuccessful: Boolean)
 
+    // Update user credentials
+
+    fun updateUserCredentialsSuccessful(isSuccessful: Boolean)
+
 }

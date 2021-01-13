@@ -211,9 +211,14 @@ class FirebaseSource(private val activity: Activity) {
 
                         firebaseSourceCallback.fetchUserData(user)
 
+                    } else {
+                        Log.i("UserData", "null")
                     }
 
+                } else {
+                    Log.i("UserDataFetch", "Unsuccessful")
                 }
+
             }
 
     }
@@ -490,6 +495,24 @@ class FirebaseSource(private val activity: Activity) {
             .update(Constants.FIELD_SKIPPED_MEALS, FieldValue.arrayRemove(skippedMeal))
             .addOnCompleteListener { task ->
                 firebaseSourceCallback.isUnskipSuccessful(task.isSuccessful)
+            }
+
+    }
+
+    // Update user credentials
+
+    fun updateUserCredentials(user: User) {
+
+        firestore.collection(Constants.COLLECTION_USERS).document(user.uid)
+            .set(user)
+            .addOnCompleteListener { task ->
+                if(task.isSuccessful) {
+                    firebaseSourceCallback.updateUserCredentialsSuccessful(task.isSuccessful)
+                } else {
+                    firebaseSourceCallback.updateUserCredentialsSuccessful(task.isSuccessful)
+                    Log.i("Exception", "Update user credentials")
+                    task.exception?.printStackTrace()
+                }
             }
 
     }
