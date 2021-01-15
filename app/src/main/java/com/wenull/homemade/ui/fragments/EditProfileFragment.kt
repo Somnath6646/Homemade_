@@ -1,8 +1,11 @@
 package com.wenull.homemade.ui.fragments
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -36,6 +39,10 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding, HomemadeVie
             }
         })
 
+        binding.profileBackBtn.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
         user = arguments?.getParcelable<User>(Constants.USER)!!
 
         Log.i("Userin Edit", "$user")
@@ -65,6 +72,8 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding, HomemadeVie
             if(checkIfCredentialsUnchanged(user)) {
                 viewModel.createToast(Constants.TOAST_CREDENTIALS_IDENTICAL)
             } else {
+                binding.progressBar.progressTintList = ColorStateList.valueOf(Color.WHITE)
+                binding.progressBar.visibility = View.VISIBLE
                 update()
             }
 
@@ -126,9 +135,11 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding, HomemadeVie
             viewModel.updateUserCredentials(newUser)
             viewModel.userCredentialsUpdateSuccessful.observe(viewLifecycleOwner, Observer { isSuccessful ->
                 if(isSuccessful) {
+                    binding.progressBar.visibility = View.GONE
                     viewModel.createToast(Constants.TOAST_CREDENTIALS_UPDATE_SUCCESSFUL)
                     findNavController().popBackStack()
                 } else {
+                    binding.progressBar.visibility = View.GONE
                     viewModel.createToast(Constants.TOAST_CREDENTIALS_UPDATE_UNSUCCESSFUL)
                     findNavController().popBackStack()
                 }

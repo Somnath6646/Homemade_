@@ -13,7 +13,7 @@ import com.wenull.homemade.databinding.ItemAvailablePacksBinding
 import com.wenull.homemade.utils.helper.Constants
 import com.wenull.homemade.utils.model.FoodPack
 
-class AvailablePacksAdapter(private val onClick: (FoodPack) -> Unit, private val enrollOnClick: (ArrayList<Long>) -> Unit) : RecyclerView.Adapter<AvailablePacksViewHolder>() {
+class AvailablePacksAdapter(private val onClick: (FoodPack) -> Unit, private val enrollOnClick: (ArrayList<Long>, String) -> Unit) : RecyclerView.Adapter<AvailablePacksViewHolder>() {
 
     private val _packs = ArrayList<FoodPack>()
     private val _userPacks = ArrayList<Long>()
@@ -39,7 +39,7 @@ class AvailablePacksAdapter(private val onClick: (FoodPack) -> Unit, private val
     }
 }
 
-class AvailablePacksViewHolder(private val binding: ItemAvailablePacksBinding, private val onClick: (FoodPack) -> Unit, private val enrollOnClick: (ArrayList<Long>) -> Unit) : RecyclerView.ViewHolder(binding.root) {
+class AvailablePacksViewHolder(private val binding: ItemAvailablePacksBinding, private val onClick: (FoodPack) -> Unit, private val enrollOnClick: (ArrayList<Long>, String) -> Unit) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(pack: FoodPack, packIds: ArrayList<Long>) {
 
@@ -65,7 +65,7 @@ class AvailablePacksViewHolder(private val binding: ItemAvailablePacksBinding, p
             binding.enrollButton.setOnClickListener {
                 val newPackIds = packIds
                 newPackIds.add(pack.id)
-                enrollOnClick(newPackIds)
+                enrollOnClick(newPackIds, binding.enrollButton.text.toString())
             }
         } else {
             binding.enrollButton.text = Constants.ENROLLED
@@ -73,7 +73,7 @@ class AvailablePacksViewHolder(private val binding: ItemAvailablePacksBinding, p
             binding.enrollButton.setOnClickListener {
                 val newPackIds = packIds
                 newPackIds.remove(pack.id)
-                enrollOnClick(newPackIds)
+                enrollOnClick(newPackIds, binding.enrollButton.text.toString())
             }
         }
 

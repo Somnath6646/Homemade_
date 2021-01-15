@@ -320,6 +320,35 @@ class FirebaseSource(private val activity: Activity) {
 
     }
 
+    // Fetching pack model by packId
+
+    fun fetchPackDetailByPackId(packIds: ArrayList<Long>) {
+        val packs = ArrayList<FoodPack>()
+        packIds.forEach { packId ->
+            firestore.collection(Constants.COLLECTION_PACKS)
+                .document(packId.toString())
+                .get()
+                .addOnSuccessListener { document ->
+                    val pack = FoodPack(
+                        id = document.data!![Constants.FIELD_ID] as Long,
+                        name = document.data!![Constants.FIELD_NAME] as String,
+                        description = document.data!![Constants.FIELD_DESCRIPTION] as String,
+                        imageName = document.data!![Constants.FIELD_IMAGE_NAME] as String,
+                        skipTimeLimit = document.data!![Constants.FIELD_SKIP_TME_LIMIT] as Long
+                    )
+                    packs.add(pack)
+                }
+                .addOnCompleteListener {
+                    firebaseSourceCallback.packDetailsFetchSuccessful(packs)
+                }
+        }
+    }
+
+
+
+
+
+
     fun fetchPackFoodDetails(packId: Long) {
 
         Log.i("PackId firebaseSource", "$packId")
@@ -437,6 +466,8 @@ class FirebaseSource(private val activity: Activity) {
 
                         if (documents != null) {
 
+                            Log.i("MYTAG","$documents")
+
                             val document = documents[0]
 
                             val food = OrderServer(
@@ -515,6 +546,12 @@ class FirebaseSource(private val activity: Activity) {
                 }
             }
 
+    }
+
+
+    //Sign-out
+    fun signOut(){
+        auth.signOut()
     }
 
 }

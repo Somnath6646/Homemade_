@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_app"
+    android:id="@+id/nav_main"
     app:startDestination="@id/splashFragment">
 
     <fragment xmlns:tools="http://schemas.android.com/tools"
@@ -17,7 +17,7 @@
             app:exitAnim="@anim/out_to_left"
             app:popEnterAnim="@anim/in_from_left"
             app:popExitAnim="@anim/out_to_right"
-            app:popUpTo="@id/nav_app"
+            app:popUpTo="@id/nav_main"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_splashFragment_to_homeFragment"
@@ -26,7 +26,7 @@
             app:exitAnim="@anim/out_to_left"
             app:popEnterAnim="@anim/in_from_left"
             app:popExitAnim="@anim/out_to_right"
-            app:popUpTo="@id/nav_app"
+            app:popUpTo="@id/nav_main"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_splashFragment_to_credentialsFragment"
@@ -35,7 +35,7 @@
             app:exitAnim="@anim/out_to_left"
             app:popEnterAnim="@anim/in_from_left"
             app:popExitAnim="@anim/out_to_right"
-            app:popUpTo="@id/credentialsFragment"
+            app:popUpTo="@id/nav_main"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
@@ -50,7 +50,7 @@
             app:exitAnim="@anim/out_to_left"
             app:popEnterAnim="@anim/in_from_left"
             app:popExitAnim="@anim/out_to_right"
-            app:popUpTo="@id/nav_app"
+            app:popUpTo="@id/nav_main"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
@@ -65,7 +65,7 @@
             app:exitAnim="@anim/out_to_left"
             app:popEnterAnim="@anim/in_from_left"
             app:popExitAnim="@anim/out_to_right"
-            app:popUpTo="@id/nav_app"
+            app:popUpTo="@id/nav_main"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
@@ -95,6 +95,15 @@
             app:exitAnim="@anim/out_to_left"
             app:popEnterAnim="@anim/in_from_left"
             app:popExitAnim="@anim/out_to_right" />
+        <action
+            android:id="@+id/action_homeFragment_to_signupLoginFragment"
+            app:destination="@id/signupLoginFragment"
+            app:enterAnim="@anim/in_from_right"
+            app:exitAnim="@anim/out_to_left"
+            app:popEnterAnim="@anim/in_from_left"
+            app:popExitAnim="@anim/out_to_right"
+            app:popUpTo="@id/nav_main"/>
+
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -106,6 +115,11 @@
             app:destination="@id/optoutBottomsheetFragment" />
         <action
             android:id="@+id/action_profileFragment_to_editProfileFragment"
+            app:enterAnim="@anim/in_from_right"
+            app:exitAnim="@anim/out_to_left"
+            app:popEnterAnim="@anim/in_from_left"
+            app:popExitAnim="@anim/out_to_right"
+            app:popUpTo="@id/editProfileFragment"
             app:destination="@id/editProfileFragment" />
     </fragment>
     <fragment
@@ -114,6 +128,7 @@
         android:label="PackContentFragment"
         tools:layout="@layout/fragment_profile" />
     <dialog
+
         android:id="@+id/optoutBottomsheetFragment"
         android:name="com.wenull.homemade.ui.fragments.OptoutBottomSheetFragment"
         android:label="OptoutBottomsheetFragment">

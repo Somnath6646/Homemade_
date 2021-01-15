@@ -1,5 +1,8 @@
 package com.wenull.homemade.ui.fragments
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -27,6 +30,7 @@ import com.wenull.homemade.utils.helper.FragmentActions
 import com.wenull.homemade.utils.model.FoodPack
 import com.wenull.homemade.utils.model.OrderServer
 import com.wenull.homemade.utils.model.User
+import kotlinx.android.synthetic.main.alert_dialog.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -72,6 +76,29 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>(), Fra
             if(getDrawerState() != 0.0f) onBackPressed()
             val action = HomeFragmentDirections.actionHomeFragmentToSkippedOrdersFragment()
             findNavController().navigate(action)
+        }
+
+        binding.layoutDrawer.signoutBtnSidenav.setOnClickListener {
+            val dialog = Dialog(requireContext())
+
+            dialog.setContentView(R.layout.alert_dialog)
+
+            dialog.dialog_main_message.text = Constants.SIGN_OUT_MAIN_MESSAGE
+            dialog.dialog_sub_text.text = Constants.SIGN_OUT_SUB_MESSAGE
+
+            dialog.button_no.setOnClickListener { dialog.dismiss() }
+
+            dialog.button_yes.setOnClickListener {
+                dialog.show()
+                viewModel.signOut()
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSignupLoginFragment())
+                dialog.dismiss()
+            }
+
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+            dialog.show()
+
         }
 
         checkUserPacksData()
@@ -121,7 +148,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>(), Fra
 
         packsAdapter = AvailablePacksAdapter(
             { pack -> packOnClick(pack) },
-            { newPackIds -> enrollButtonOnclick(newPackIds) }
+            { newPackIds, type: String -> enrollButtonOnclick(newPackIds, type) }
         )
         binding.layoutContent.recylerViewAvailablePacks.adapter = packsAdapter
         binding.layoutContent.recylerViewAvailablePacks.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -141,8 +168,29 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>(), Fra
         findNavController().navigate(action.actionId, bundle)
     }
 
-    private fun enrollButtonOnclick(newPackIds: ArrayList<Long>) {
-        viewModel.enrollOrUnenroll(auth.currentUser!!.uid, newPackIds)
+    private fun enrollButtonOnclick(newPackIds: ArrayList<Long>, type: String) {
+        val dialog = Dialog(requireContext())
+
+        dialog.setContentView(R.layout.alert_dialog)
+
+        dialog.dialog_main_message.text = Constants.UNENROLL_MAIN_MESSAGE
+        dialog.dialog_sub_text.text = Constants.UNENROLL_SUB_MESSAGE
+
+        dialog.button_no.setOnClickListener { dialog.dismiss() }
+
+        dialog.button_yes.setOnClickListener {
+            viewModel.enrollOrUnenroll(auth.currentUser!!.uid, newPackIds)
+            dialog.dismiss()
+        }
+
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        if(type.equals(Constants.ENROLLED)) {
+            dialog.show()
+        }else{
+            viewModel.enrollOrUnenroll(auth.currentUser!!.uid, newPackIds)
+        }
+
     }
 
     private fun updateFoods(packIds: ArrayList<Long>) {
@@ -162,7 +210,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>(), Fra
         // Packs adapter
         packsAdapter = AvailablePacksAdapter(
             { pack -> packOnClick(pack) },
-            { newPackIds -> enrollButtonOnclick(newPackIds) }
+            { newPackIds,type -> enrollButtonOnclick(newPackIds, type) }
         )
         binding.layoutContent.recylerViewAvailablePacks.adapter = packsAdapter
         binding.layoutContent.recylerViewAvailablePacks.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -181,14 +229,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomemadeViewModel>(), Fra
 
     }
 
-    private fun setWindowColor(colorId: Int){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val window: Window = requireActivity().window
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.setStatusBarColor(resources.getColor(colorId))
-            window.navigationBarColor = resources.getColor(colorId)
-        }
-    }
+
 
     override fun onBackPressed() {
         binding.motionLayout.transitionToStart()

@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
@@ -18,6 +19,7 @@ import com.wenull.homemade.databinding.FragmentCredentialsBinding
 import com.wenull.homemade.ui.viewmodel.HomemadeViewModel
 import com.wenull.homemade.ui.fragments.base.BaseFragment
 import com.wenull.homemade.utils.helper.Constants
+import com.wenull.homemade.utils.helper.CredState
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
@@ -72,9 +74,24 @@ class CredentialsFragment : BaseFragment<FragmentCredentialsBinding, HomemadeVie
 
         viewModel.credentialsAndImageState.observe(viewLifecycleOwner, Observer {
             it.getContentIfNotHandled().let {
-                if(it != null && it == Constants.SUCCESSFUL) {
-                    Toast.makeText(activity, "Cred & Image upload successful", Toast.LENGTH_SHORT).show()
-                    navigateForward()
+                if(it != null) {
+                    when(it)  {
+                       CredState.SUCESSFUL -> {
+                           binding.progressBar.visibility = View.GONE
+                           Toast.makeText(
+                               activity,
+                               "Cred & Image upload successful",
+                               Toast.LENGTH_SHORT
+                           ).show()
+                           navigateForward()
+                       }
+                        CredState.LOADING ->{
+                            binding.progressBar.visibility = View.VISIBLE
+                        }
+                        CredState.FAILED ->{
+                            binding.progressBar.visibility = View.GONE
+                        }
+                    }
                 }
             }
         })

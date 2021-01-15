@@ -36,6 +36,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, HomemadeViewModel>(
 
     var userSkippedData: UserSkippedData? = null
 
+    private val userPackIds = ArrayList<Long>()
+
     override fun getLayout(): Int = R.layout.fragment_profile
 
     override fun getViewModelClass(): Class<HomemadeViewModel> = HomemadeViewModel::class.java
@@ -46,9 +48,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, HomemadeViewModel>(
         binding.lifecycleOwner = viewLifecycleOwner
         viewModel.setFirebaseSourceCallback()
 
+        getUserData()
         setUpRecyclerView()
         getUserSkippedData()
-        getUserData()
+
 
         binding.profileBackBtn.setOnClickListener {
             findNavController().popBackStack()
@@ -71,6 +74,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, HomemadeViewModel>(
 
         viewModel.fetchUserData(auth.currentUser!!.uid)
         viewModel.userData.observe(viewLifecycleOwner, Observer { user ->
+
+            userPackIds.clear()
+            userPackIds.addAll(user.packsEnrolled)
+            setUpRecyclerView()
+
             setAddressAndName(user.address, user.firstName, user.lastName)
             setUserImage(user.imageName)
             goToEditProfileFragment(user)
@@ -83,7 +91,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, HomemadeViewModel>(
         binding.usernameProfilefrag.text = "$firstName $lastName"
 
         val addressText =
-            "${address.buildingNameOrNumber},\n${address.streetName},\n${address.locality},\n${address.city} - ${address.pincode}"
+            "${address.buildingNameOrNumber.trim()},${address.streetName.trim()},\n${address.locality.trim()},${address.city.trim()} - ${address.pincode.trim()}"
 
         binding.addressProfilefrag.text = addressText
 
@@ -123,12 +131,31 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, HomemadeViewModel>(
 
     }
 
+
     private fun displayPacks() {
-        viewModel.fetchPackDetails()
+        Log.i("MYTAG", "size "+userPackIds.size.toString() )
+        if(userPackIds.size > 0) {
+            println("aya hai")
+            binding.noPacksLayout.visibility = View.GONE
+            binding.recyclerviewLayoutProfile.visibility = View.VISIBLE
+        }
+        else {
+            println("else aya hai")
+            binding.recyclerviewLayoutProfile.visibility = View.GONE
+            binding.noPacksLayout.visibility = View.VISIBLE
+
+        }
+        viewModel.fetchPackDetails(userPackIds)
+
         viewModel.packs.observe(viewLifecycleOwner, Observer { packs ->
-            adapter.setList(packs)
+
+                adapter.setList(packs)
+
         })
     }
+
+
+
 
     private fun onOptOutMenuClick(pack: FoodPack, view: View) {
 
@@ -191,6 +218,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, HomemadeViewModel>(
 
     }
 
-    private fun foreverOptout(foodPack: FoodPack) {}
+    private fun foreverOptout(foodPack: FoodPack) {
+        userPackIds.remove(foodPack.id)
+        displayPacks()
+        viewModel.enrollOrUnenroll(auth.currentUser!!.uid, userPackIds)
+    }
 
 }

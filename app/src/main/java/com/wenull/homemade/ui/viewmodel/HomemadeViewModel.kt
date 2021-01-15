@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.wenull.homemade.utils.helper.Constants
 import com.wenull.homemade.repositories.HomemadeRepository
+import com.wenull.homemade.utils.helper.CredState
 import com.wenull.homemade.utils.helper.Event
 import com.wenull.homemade.utils.model.*
 
@@ -27,6 +28,9 @@ class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel()
 
     val signInState: LiveData<Event<Boolean>>
         get() = repository.signInState
+
+    val progressBarState: LiveData<Boolean>
+    get() = repository.progressBarState
 
     @Bindable
     val phoneNumber: MutableLiveData<String> = MutableLiveData()
@@ -97,7 +101,7 @@ class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel()
         get() = repository.credentialsState
     val imageState: LiveData<Event<Boolean>>
         get() = repository.imageState
-    val credentialsAndImageState: LiveData<Event<Boolean>>
+    val credentialsAndImageState: LiveData<Event<CredState>>
         get() = repository.credentialsAndImageState
 
     fun addUserCredentialsToDatabase() {
@@ -159,11 +163,16 @@ class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel()
     val packs: LiveData<ArrayList<FoodPack>>
         get() = repository.packsLiveData
 
+
     val packFoods: LiveData<ArrayList<OrderServer>>
         get() = repository.packFoodsLiveData
 
     fun fetchPackDetails() {
         repository.fetchPackDetails()
+    }
+
+    fun fetchPackDetails(packIds: ArrayList<Long>){
+        repository.fetchPackDetails(packIds)
     }
 
     fun fetchPackFoodDetails(packId: Long) {
@@ -244,6 +253,13 @@ class HomemadeViewModel(private val repository: HomemadeRepository): ViewModel()
     fun updateUserCredentials(user: User) {
         repository.updateUserCredentials(user)
     }
+
+
+    //Sign out
+    fun signOut(){
+        repository.signOut()
+    }
+
 
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {}
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {}

@@ -3,151 +3,240 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+
+        <LinearLayout android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/dull_white"
-            tools:context=".ui.fragments.ProfileFragment">
-
-            <ImageView
-                android:id="@+id/profile_back_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_18dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:padding="@dimen/padding_7dp"
-                android:src="@drawable/ic_back"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/profile_edit_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_18dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:padding="@dimen/padding_7dp"
-                android:src="@drawable/ic_edit"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/profile_pic_cardView"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_margin="@dimen/margin_30dp"
-                android:clickable="true"
-                android:focusable="true"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="0dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/profile_back_btn">
-
-                <ImageView
-                    android:id="@+id/profile_pic_imageView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </androidx.cardview.widget.CardView>
-
+            android:orientation="vertical">
             <LinearLayout
-                android:id="@+id/name_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginStart="@dimen/margin_30dp"
-                android:layout_marginEnd="@dimen/margin_30dp"
-                app:layout_constraintBottom_toBottomOf="@+id/profile_pic_cardView"
-                app:layout_constraintStart_toEndOf="@+id/profile_pic_cardView"
-                app:layout_constraintTop_toTopOf="@+id/profile_pic_cardView">
-
-                <TextView
-                    android:id="@+id/username_profilefrag"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/sf_pro_rounded_semibold"
-                    android:text="Rounak Singh"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_16sp" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/address_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_30dp"
-                android:layout_marginStart="@dimen/margin_30dp"
-                android:layout_marginEnd="@dimen/margin_30dp"
-                android:orientation="vertical"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/profile_pic_cardView">
-
-                <TextView
-                    android:id="@+id/address_overline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/sf_pro_rounded_semibold"
-                    android:text="@string/address_label_credentialsfrag"
-                    android:textSize="@dimen/text_size_14sp" />
-
-                <TextView
-                    android:id="@+id/address_profilefrag"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8dp"
-                    android:fontFamily="@font/sf_pro_rounded_semibold"
-                    android:text="@string/sample_address"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_16sp"
-                    app:layout_constraintStart_toStartOf="parent" />
-            </LinearLayout>
-
-
-            <LinearLayout  android:id="@+id/recyclerview_layout_profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-
-                android:layout_marginTop="@dimen/margin_30dp"
-
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/address_layout">
-                <TextView
-                    android:id="@+id/yourpacks_profilefrag"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/profile_back_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_30dp"
-                    android:layout_marginEnd="@dimen/margin_30dp"
-                    android:fontFamily="@font/sf_pro_rounded_semibold"
-                    android:text="@string/label_your_packs"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_20sp"
-                    />
+                    android:layout_margin="@dimen/margin_18dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:padding="@dimen/padding_7dp"
+                    android:src="@drawable/ic_back"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recylerView_your_packs"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/profile_label"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_15dp"
-                    android:layout_marginEnd="@dimen/margin_15dp"
-                    android:layout_marginTop="@dimen/margin_8dp"
-                    />
+                    android:fontFamily="@font/sf_pro_rounded_bold"
+                    android:text="Profile"
+                    android:textSize="20sp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="@+id/profile_edit_btn"
+                    app:layout_constraintEnd_toStartOf="@+id/profile_edit_btn"
+                    app:layout_constraintStart_toEndOf="@+id/profile_back_btn"
+                    app:layout_constraintTop_toTopOf="@+id/profile_back_btn" />
+
+                <ImageView
+                    android:id="@+id/profile_edit_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_18dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:padding="@dimen/padding_7dp"
+                    android:src="@drawable/ic_edit"
+                    app:layout_constraintBottom_toBottomOf="@+id/profile_back_btn"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/profile_back_btn" />
             </LinearLayout>
 
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                tools:context=".ui.fragments.ProfileFragment">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:id="@+id/profile_cred_layout"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp"
+                    android:layout_marginStart="@dimen/margin_20dp"
+                    android:layout_marginEnd="@dimen/margin_20dp"
+                    app:layout_constraintBottom_toTopOf="@+id/layout_your_packs"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/profile_pic_cardView"
+                            android:layout_width="90dp"
+                            android:layout_height="100dp"
+                            android:layout_margin="16dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:cardCornerRadius="10dp"
+                            app:cardElevation="1.4dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:id="@+id/profile_pic_imageView"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
+                        </androidx.cardview.widget.CardView>
+
+                        <LinearLayout
+                            android:id="@+id/name_layout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_15dp"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="@+id/profile_pic_cardView"
+                            app:layout_constraintStart_toEndOf="@+id/profile_pic_cardView"
+                            app:layout_constraintTop_toTopOf="@+id/profile_pic_cardView">
+
+                            <TextView
+                                android:id="@+id/username_profilefrag"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/sf_pro_rounded_semibold"
+                                android:text="Somnath Mishra"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_18sp" />
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
+
+                            <TextView
+                                android:id="@+id/address_profilefrag"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+
+                                android:fontFamily="@font/sf_pro_rounded_semibold"
+                                android:textColor="@color/gray"
+                                android:textSize="@dimen/text_size_14sp"
+                                app:layout_constraintStart_toStartOf="parent" />
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_your_packs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/profile_cred_layout"
+                android:layout_marginTop="@dimen/margin_30dp"
+                >
+                <LinearLayout  android:id="@+id/recyclerview_layout_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+
+
+
+                    >
+                    <TextView
+                        android:id="@+id/yourpacks_profilefrag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_30dp"
+                        android:layout_marginEnd="@dimen/margin_30dp"
+                        android:fontFamily="@font/sf_pro_rounded_semibold"
+                        android:text="@string/label_your_packs"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_20sp"
+                        />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recylerView_your_packs"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginStart="@dimen/margin_15dp"
+                        android:layout_marginEnd="@dimen/margin_15dp"
+                        android:layout_marginTop="@dimen/margin_8dp"
+                        />
+
+
+
+
+
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/no_packs_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingTop="60dp"
+                    android:visibility="gone"
+                    android:paddingBottom="60dp"
+                    >
+                    <TextView
+                        android:id="@+id/no_packs_head_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/margin_16dp"
+                        android:layout_marginEnd="@dimen/margin_16dp"
+                        android:layout_marginBottom="@dimen/margin_16dp"
+                        android:fontFamily="@font/sf_pro_rounded_semibold"
+                        android:maxLines="3"
+
+                        android:gravity="center"
+                        android:text="No packs enrolled"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/no_packs_sub_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/margin_16dp"
+                        android:layout_marginEnd="@dimen/margin_16dp"
+                        android:layout_marginBottom="@dimen/margin_16dp"
+                        android:fontFamily="@font/sf_pro_rounded_semibold"
+                        android:maxLines="3"
+
+                        android:gravity="center"
+                        android:text="You are not enrolled to any pack. \nGo to home to enroll in packs."
+                        android:textColor="@color/gray"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            </ScrollView>
+        </LinearLayout>
+
+
+
+
+
+
 
 </layout>

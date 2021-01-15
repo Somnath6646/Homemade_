@@ -103,6 +103,8 @@
 
             </LinearLayout>
 
+
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/btn_signinfrag"
                 android:layout_width="0dp"
@@ -129,6 +131,17 @@
                     android:orientation="horizontal"
                     android:textAllCaps="false"
                     android:textSize="@dimen/text_size_16sp">
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        style="?android:attr/progressBarStyleLarge"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:indeterminate="true"
+                        android:visibility="gone"
+                        android:layout_marginRight="@dimen/margin_20dp"
+                        android:indeterminateTintMode="src_atop"
+                        android:indeterminateTint="@color/white"
+                        />
 
                     <TextView
                         android:id="@+id/btn_signinfrag_text"

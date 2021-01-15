@@ -32,7 +32,7 @@ class UserPacksAdapter(private val optOutMenuClickListener: (FoodPack, View) -> 
         holder.bind(_packs[position])
     }
 
-    fun setList(packs: List<FoodPack>){
+    fun setList(packs: List<FoodPack>) {
         _packs.clear()
         _packs.addAll(packs)
         notifyDataSetChanged()
@@ -70,7 +70,7 @@ class UserPacksViewHolder(private val binding: ItemUserOwnedPacksBinding, privat
         binding.packShortDescription.text = pack.description
 
         binding.optoutMenuBtn.setOnClickListener {
-            optOutMenuClickListener(pack, binding.itemPackContainer)
+            optOutMenuClickListener(pack , binding.itemPackContainer)
         }
 
     }

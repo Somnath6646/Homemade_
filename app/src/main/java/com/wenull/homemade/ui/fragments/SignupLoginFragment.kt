@@ -1,6 +1,7 @@
 package com.wenull.homemade.ui.fragments
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -40,6 +41,16 @@ class SignupLoginFragment : BaseFragment<FragmentSignupLoginBinding, HomemadeVie
             it.getContentIfNotHandled().let {
                 if(it != null && it == Constants.SUCCESSFUL) {
                     navigateForward()
+                }
+            }
+        })
+
+        viewModel.progressBarState.observe(viewLifecycleOwner, Observer {
+            if(it != null) {
+                if (it) {
+                    binding.progressBar.visibility = View.VISIBLE
+                } else {
+                    binding.progressBar.visibility = View.GONE
                 }
             }
         })

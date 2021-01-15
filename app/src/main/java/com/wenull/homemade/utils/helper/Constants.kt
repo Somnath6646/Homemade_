@@ -31,6 +31,10 @@ class Constants {
         const val TOAST_CREDENTIALS_IDENTICAL = "Your credentials aur same"
         const val TOAST_CREDENTIALS_UPDATE_SUCCESSFUL = "Credentials successfully updated"
         const val TOAST_CREDENTIALS_UPDATE_UNSUCCESSFUL = "Credentials update failed"
+        const val SIGN_OUT_MAIN_MESSAGE = "Do you want to sign out?"
+        const val SIGN_OUT_SUB_MESSAGE = "Click on yes to sign out of the app"
+        const val UNENROLL_MAIN_MESSAGE = "Do you really want to unenroll yourself from this pack "
+        const val UNENROLL_SUB_MESSAGE = "Click on yes to unenroll yourself from this pack"
 
         // Values
         const val SUCCESSFUL = true

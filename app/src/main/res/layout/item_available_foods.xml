@@ -38,8 +38,8 @@
                         android:id="@+id/food_item_thumbnail"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/dum_aloo" />
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_chef_topi" />
 
                 </androidx.cardview.widget.CardView>
 
